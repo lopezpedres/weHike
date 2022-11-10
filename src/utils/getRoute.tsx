@@ -1,13 +1,15 @@
-const getRoute = async (end: number[], start: number[]) => {
-  const MAP_BOX_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
+import { Feature, Position } from "geojson";
+
+const getRoute = async (end: Position, start: Position) => {
+  const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
   try {
     const query = await fetch(
-      `https://api.mapbox.com/directions/v5/mapbox/walking/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${MAP_BOX_TOKEN}`,
+      `https://api.mapbox.com/directions/v5/mapbox/walking/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&overview=full&access_token=${MAP_BOX_TOKEN}`,
       { method: "GET" }
     );
     const json = await query.json();
-    const route = json.geometry.coordinates; //TODO:Need to create a type for the response
-    const geojson: GeoJSON.Feature = {
+    const route = json.routes[0].geometry.coordinates; //TODO:Need to create a type for the response
+    const geojson: Feature = {
       type: "Feature",
       properties: {},
       geometry: {
