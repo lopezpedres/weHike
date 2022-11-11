@@ -1,8 +1,55 @@
 
-THIS IS THE GOOD ONE!
+THIS one returns ALL the highway=path within the bbox
 http://overpass-api.de/api/interpreter?data=[out:json][timeout:25];(node[%22highway%22=%22path%22](49.435203477038,-123.23312759399,49.459198634469,-123.21630477905);way[%22highway%22=%22path%22](49.435203477038,-123.23312759399,49.459198634469,-123.21630477905);relation[%22highway%22=%22path%22](49.435203477038,-123.23312759399,49.459198634469,-123.21630477905););out%20body;%3E;out%20skel%20qt;
 
 Follow this pattern:
 [out:json][timeout:25];(node["highway"="path"]({south},{west},{north},{east});way["highway"="path"]({south},{west},{north},{east});relation["highway"="path"]({south},{west},{north},{east}););out body;>;out skel qt;
 
 osm to Geojson --> https://github.com/tyrasd/osmtogeojson
+
+This one returns node,way, relation by ID
+-Overpass Turbo query:
+(
+  // query part for: “node=62646538”
+  node(366057030)({{bbox}});
+  way(366057030)({{bbox}});
+  relation(366057030)({{bbox}});
+);
+
+-Follow this pattern
+[out:json][timeout:25];(node(366057030)({south},{west},{north},{east});way(366057030)({south},{west},{north},{east});relation(366057030)({south},{west},{north},{east}););out body;>;out skel qt;
+
+
+
+This returns a cvs of names of bbox:
+-Overpass Turbo query
+[out:csv ("name")][timeout:25];
+
+(
+  way["highway"]["name"]({{bbox}});
+);
+for (t["name"])
+{
+  make street name=_.val;
+  out;
+
+[out:csv ("name")][timeout:25];(way["highway"]["name"]({south},{west},{north},{east}););for (t["name"]){make street name=_.val;out body;
+
+Need to save this as a .text() and then transform it into a json()
+
+
+THIS IS THE REAL ONE!!!!
+-This returns a json with only the  names and tags within the bbox
+
+
+[out:json][timeout:25];
+
+(
+  way["highway"="path"]["name"]({{bbox}});
+);
+
+
+  out tags;
+
+-This is the query :
+[out:json][timeout:25];(way["highway"="path"]["name"]({south},{west},{north},{east}););out tags;
