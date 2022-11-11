@@ -1,0 +1,8 @@
+
+THIS IS THE GOOD ONE!
+http://overpass-api.de/api/interpreter?data=[out:json][timeout:25];(node[%22highway%22=%22path%22](49.435203477038,-123.23312759399,49.459198634469,-123.21630477905);way[%22highway%22=%22path%22](49.435203477038,-123.23312759399,49.459198634469,-123.21630477905);relation[%22highway%22=%22path%22](49.435203477038,-123.23312759399,49.459198634469,-123.21630477905););out%20body;%3E;out%20skel%20qt;
+
+Follow this pattern:
+[out:json][timeout:25];(node["highway"="path"]({south},{west},{north},{east});way["highway"="path"]({south},{west},{north},{east});relation["highway"="path"]({south},{west},{north},{east}););out body;>;out skel qt;
+
+osm to Geojson --> https://github.com/tyrasd/osmtogeojson
