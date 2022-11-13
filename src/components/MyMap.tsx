@@ -1,3 +1,4 @@
+import "../data.css";
 import Map, {
   CircleLayer,
   NavigationControl,
@@ -15,6 +16,7 @@ import routeLayer from "../Layers/routeLayer";
 import getRoute from "../utils/getRoute";
 import { Feature, FeatureCollection, Position } from "geojson";
 import startLayer from "../Layers/startLayer";
+import BoundingBox from "./BoundingBox";
 
 const start: Position = [-123.01484612998101, 49.95358547262097];
 const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
@@ -61,40 +63,38 @@ const MyMap = () => {
   return (
     <div>
       <div>
-        {"latitude" + viewState.latitude}
-        {"longitude" + viewState.longitude}
-      </div>
+        <Map
+          {...viewState}
+          ref={mapRef}
+          onClick={(e) => displayRoute(e)}
+          onMove={(evt) => setViewState(evt.viewState)}
+          style={{ width: "100vw", height: "100vh" }}
+          mapStyle="mapbox://styles/mapbox/streets-v11"
+          mapboxAccessToken={MAP_BOX_TOKEN}
+          terrain={{ source: "mapbox-dem", exaggeration: 2 }}
+          maxPitch={85}
+        >
+          <Source
+            id="mapbox-dem"
+            type="raster-dem"
+            url="mapbox://mapbox.mapbox-terrain-dem-v1"
+          />
+          <Layer {...skyLayer} />
 
-      <Map
-        {...viewState}
-        ref={mapRef}
-        onClick={(e) => displayRoute(e)}
-        onMove={(evt) => setViewState(evt.viewState)}
-        style={{ width: 800, height: 600 }}
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        mapboxAccessToken={MAP_BOX_TOKEN}
-        terrain={{ source: "mapbox-dem", exaggeration: 2 }}
-        maxPitch={85}
-      >
-        <Source
-          id="mapbox-dem"
-          type="raster-dem"
-          url="mapbox://mapbox.mapbox-terrain-dem-v1"
-        />
-        <Layer {...skyLayer} />
-
-        {geojsonRouteSource && (
-          <Source id="current-route" type="geojson" data={geojsonRouteSource}>
-            <Layer {...routeLayer} />
+          {geojsonRouteSource && (
+            <Source id="current-route" type="geojson" data={geojsonRouteSource}>
+              <Layer {...routeLayer} />
+            </Source>
+          )}
+          <Source id="data" type="geojson" data={circleSource}>
+            <Layer {...circleLayer} />
           </Source>
-        )}
-        <Source id="data" type="geojson" data={circleSource}>
-          <Layer {...circleLayer} />
-        </Source>
-        <NavigationControl />
-        <GeolocateControl />
-        <FullscreenControl />
-      </Map>
+          <NavigationControl />
+          <GeolocateControl />
+          <FullscreenControl />
+          <BoundingBox viewState={viewState} mapRef={mapRef} />
+        </Map>
+      </div>
     </div>
   );
 };
