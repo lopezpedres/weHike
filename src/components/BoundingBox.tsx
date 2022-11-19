@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import type { MapRef } from "react-map-gl";
+import getBoundingBoxPoints from "../utils/getBoundingBoxPoints";
 
 interface PropsInterface {
   viewState: {
@@ -11,15 +12,13 @@ interface PropsInterface {
 }
 const BoundingBox = ({ viewState, mapRef }: PropsInterface) => {
   const bboxRef = useRef<HTMLDivElement | null>(null);
-  const bboxPoints = bboxRef.current?.getBoundingClientRect();
-  const latlan =
-    bboxPoints && mapRef.current?.unproject([bboxPoints?.x, bboxPoints?.y]);
-  console.log(latlan);
+  const bBoxHanlder = () => getBoundingBoxPoints({ bboxRef, mapRef });
 
   return (
-    <div ref={bboxRef} className="div-data">
-      {"latitude" + viewState.latitude}
-      {"longitude" + viewState.longitude}
+    <div onClick={() => bBoxHanlder()} ref={bboxRef} className="div-data">
+      {"latitude " + viewState.latitude}
+      <br />
+      {"longitude " + viewState.longitude}
     </div>
   );
 };

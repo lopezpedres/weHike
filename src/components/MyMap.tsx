@@ -13,53 +13,43 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useRef, useState } from "react";
 import skyLayer from "../Layers/skyLayer";
 import routeLayer from "../Layers/routeLayer";
-import getRoute from "../utils/getRoute";
+import getPointToPointRoute from "../Sources/getPointToPointRoute";
 import { Feature, FeatureCollection, Position } from "geojson";
 import startLayer from "../Layers/startLayer";
 import BoundingBox from "./BoundingBox";
+import getStartPointPathRoute from "../Sources/getStartPoinPathRoute";
 
 const start: Position = [-123.01484612998101, 49.95358547262097];
 const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
-
+const defaultViewState = {
+  latitude: 49.95358547262097,
+  longitude: -123.01484612998101,
+  zoom: 14,
+};
 const MyMap = () => {
   const mapRef = useRef<MapRef | null>(null);
-  const defaultViewState = {
-    latitude: 49.95358547262097,
-    longitude: -123.01484612998101,
-    zoom: 14,
-  };
   const [viewState, setViewState] = useState(defaultViewState);
-
   const [geojsonRouteSource, setGeojsonRouteSource] = useState<Feature | null>(
     null
   );
+  const [displayBbox, setDisplayBbox]=useState(false)
 
   //Layers to add
-  const circleLayer = startLayer(start) as CircleLayer;
-  const circleSource: FeatureCollection = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "Point",
-          coordinates: start,
-        },
-      },
-    ],
-  };
-  //On load Functions
-  const setDirections = () => {};
+  const startPointLayer = startLayer(start) as CircleLayer;
+  const startPointSource = getStartPointPathRoute(start);
+
+  //Todo:Need to move this to handlers
   const displayRoute = async (e: MapLayerMouseEvent) => {
     const lng = e.lngLat.lng;
     const lat = e.lngLat.lat;
-    const geojsonResponse = await getRoute(start, [lng, lat]);
-    if (geojsonResponse) {
-      setGeojsonRouteSource(geojsonResponse);
+    const poitToPointGeojsonRoute = await getPointToPointRoute(start, [
+      lng,
+      lat,
+    ]);
+    if (poitToPointGeojsonRoute) {
+      setGeojsonRouteSource(poitToPointGeojsonRoute);
     }
   };
-
   return (
     <div>
       <div>
@@ -86,14 +76,14 @@ const MyMap = () => {
               <Layer {...routeLayer} />
             </Source>
           )}
-          <Source id="data" type="geojson" data={circleSource}>
-            <Layer {...circleLayer} />
+          <Source id="data" type="geojson" data={startPointSource}>
+            <Layer {...startPointLayer} />
           </Source>
           <NavigationControl />
           <GeolocateControl />
-          <FullscreenControl />
-          <BoundingBox viewState={viewState} mapRef={mapRef} />
+          {displayBbox&&<BoundingBox viewState={viewState} mapRef={mapRef} />}
         </Map>
+        <button>{displayBbox?"Select Area":"Cancel"}</button>
       </div>
     </div>
   );

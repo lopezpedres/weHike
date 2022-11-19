@@ -1,6 +1,6 @@
 import { Feature, Position } from "geojson";
 
-const getRoute = async (end: Position, start: Position) => {
+const getPointToPointRoute = async (end: Position, start: Position) => {
   const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
   try {
     const query = await fetch(
@@ -23,4 +23,4 @@ const getRoute = async (end: Position, start: Position) => {
   }
 };
 
-export default getRoute;
+export default getPointToPointRoute;
