@@ -15,7 +15,11 @@ const BoundingBox = ({ viewState, mapRef }: PropsInterface) => {
   const bBoxHanlder = () => getBoundingBoxPoints({ bboxRef, mapRef });
 
   return (
-    <div onClick={() => bBoxHanlder()} ref={bboxRef} className="div-data">
+    <div
+      onClick={() => bBoxHanlder()}
+      ref={bboxRef}
+      className="w-full h-1/3 absolute border-4 border-black top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+    >
       {"latitude " + viewState.latitude}
       <br />
       {"longitude " + viewState.longitude}

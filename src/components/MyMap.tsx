@@ -1,4 +1,3 @@
-import "../data.css";
 import Map, {
   CircleLayer,
   NavigationControl,
@@ -32,7 +31,7 @@ const MyMap = () => {
   const [geojsonRouteSource, setGeojsonRouteSource] = useState<Feature | null>(
     null
   );
-  const [displayBbox, setDisplayBbox]=useState(false)
+  const [displayBbox, setDisplayBbox] = useState(true);
 
   //Layers to add
   const startPointLayer = startLayer(start) as CircleLayer;
@@ -81,9 +80,11 @@ const MyMap = () => {
           </Source>
           <NavigationControl />
           <GeolocateControl />
-          {displayBbox&&<BoundingBox viewState={viewState} mapRef={mapRef} />}
+          {displayBbox && <BoundingBox viewState={viewState} mapRef={mapRef} />}
         </Map>
-        <button>{displayBbox?"Select Area":"Cancel"}</button>
+        <button onClick={() => setDisplayBbox(!displayBbox)}>
+          {!displayBbox ? "Select Area" : "Cancel"}
+        </button>
       </div>
     </div>
   );
