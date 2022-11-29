@@ -41,7 +41,7 @@ const MyMap = () => {
   const [geojsonRouteSource, setGeojsonRouteSource] = useState<Feature | null>(
     null
   );
-  const [displayBbox, setDisplayBbox] = useState(true);
+  const [displayBbox, setDisplayBbox] = useState(false);
   const [currentBbox, setCurrentBbox] = useState<bboxInterface | null>(null);
   const [currentBboxPathNames, setCurrentBboxPathNames] = useState<
     string[] | null
@@ -54,13 +54,26 @@ const MyMap = () => {
   const displayRoute = async (e: MapLayerMouseEvent) => {
     const lng = e.lngLat.lng;
     const lat = e.lngLat.lat;
-    const poitToPointGeojsonRoute = await getPointToPointRoute(start, [
-      lng,
-      lat,
-    ]);
-    if (poitToPointGeojsonRoute) {
-      setGeojsonRouteSource(poitToPointGeojsonRoute);
-    }
+    console.log(e.point);
+    const width = 50;
+    const height = 100;
+    const features = mapRef.current?.queryRenderedFeatures(
+      [
+        [e.point.x - width / 2, e.point.y - height / 2],
+        [e.point.x + width / 2, e.point.y + height / 2],
+      ],
+      {
+        layers: ["trails"],
+      }
+    );
+    console.log(features);
+    // const poitToPointGeojsonRoute = await getPointToPointRoute(start, [
+    //   lng,
+    //   lat,
+    // ]);
+    // if (poitToPointGeojsonRoute) {
+    //   setGeojsonRouteSource(poitToPointGeojsonRoute);
+    // }
   };
   return (
     <div>
@@ -70,7 +83,7 @@ const MyMap = () => {
         onClick={(e) => displayRoute(e)}
         onMove={(evt) => setViewState(evt.viewState)}
         style={{ width: "100vw", height: "70vh" }}
-        mapStyle="mapbox://styles/mapbox/streets-v11"
+        mapStyle="mapbox://styles/lopezpedres/claprud1h002i15o6cuq5tg54"
         mapboxAccessToken={MAP_BOX_TOKEN}
         terrain={{ source: "mapbox-dem", exaggeration: 2 }}
         maxPitch={85}

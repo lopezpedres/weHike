@@ -4,7 +4,7 @@ import GeneralListItem from "../GeneralListItem/GeneralListItem";
 const GeneralList = ({ pathNames }: any | string[] | null | undefined) => {
   console.log(pathNames);
   return (
-    <ul>
+    <ul className="overflow-y-scroll h-[100px]">
       {pathNames &&
         pathNames.map((item: string) => <GeneralListItem item={item} />)}
     </ul>

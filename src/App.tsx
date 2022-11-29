@@ -1,7 +1,7 @@
 import MyMap from "./components/Map/MyMap";
-
+import ImageForm from "./components/ImageForm/ImageForm";
 function App() {
-  return <MyMap />;
+  return <ImageForm />;
 }
 
 export default App;
