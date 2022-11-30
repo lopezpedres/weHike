@@ -110,15 +110,15 @@ const MyMap = () => {
           <BoundingBox setCurrentBbox={setCurrentBbox} mapRef={mapRef} />
         )}
       </Map>
-      <BboxButton
+      {/* <BboxButton
         activateButton={() => setDisplayBbox(!displayBbox)}
         displayBbox={displayBbox}
-      />
-      <Options
+      /> */}
+      {/* <Options
         currentBbox={currentBbox}
         setCurrentBboxPathNames={setCurrentBboxPathNames}
-      />
-      <GeneralList pathNames={currentBboxPathNames} />
+      /> */}
+      {/* <GeneralList pathNames={currentBboxPathNames} /> */}
     </div>
   );
 };
