@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useReducer, createContext, Dispatch } from "react";
 import userContentReducer from "./UserContentReducer";
 import type { State, Action } from "./UserContentTypes";
@@ -13,32 +13,22 @@ const defaultState: State = {} as State;
 const userContentState = createContext(defaultState);
 const userContentDispatch = createContext((() => {}) as Dispatch<Action>);
 const UserContentProvider = ({ children }: LayoutProps) => {
-  // const [user,setUser]=useState<>(null)
   const [state, dispatch] = useReducer(userContentReducer, defaultState);
-
-  const getUserContent = () => {
-    const userContentRef = collection(db, "users-content");
-    const userTrailsRef = collection(db, "user-trails");
-    onAuthStateChanged(auth, (user) => {
+  const [userTrails, setUserTrails] = useState<any>(null);
+  const userContentRef = collection(db, "users-content");
+  const userTrailsRef = collection(db, "user-trails");
+  useEffect(() => {
+    const onAuthChange = onAuthStateChanged(auth, (user) => {
       if (user) {
         const q = query(userTrailsRef, where("uid", "==", user.uid));
-        console.log(user.uid);
-
         onSnapshot(q, (querySnapshot) => {
           const allDocs = querySnapshot.docs.map((doc) => doc.data());
           console.log(allDocs);
-          /**
-           * This returns the doc of the query and changes the state of the dispatch
-           */
-          // const { pass } = querySnapshot.docs[0].data(); //How can I assign string type to pass?
-          // dispatch({ type: "CHANGE-PASSWORD", payload: pass });
+          setUserTrails(allDocs);
         });
       }
     });
-  };
-  useEffect(() => {
-    getUserContent();
-    return () => getUserContent();
+    return () => onAuthChange();
   }, []);
 
   return (
