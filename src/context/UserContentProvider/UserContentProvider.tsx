@@ -4,7 +4,7 @@ import userContentReducer from "./UserContentReducer";
 import type { State, Action } from "./UserContentTypes";
 import { db, auth } from "../../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, where, query, onSnapshot } from "firebase/firestore";
+import { collection, where, query, onSnapshot, doc } from "firebase/firestore";
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -15,16 +15,22 @@ const userContentDispatch = createContext((() => {}) as Dispatch<Action>);
 const UserContentProvider = ({ children }: LayoutProps) => {
   const [state, dispatch] = useReducer(userContentReducer, defaultState);
   const [userTrails, setUserTrails] = useState<any>(null);
-  const userContentRef = collection(db, "users-content");
-  const userTrailsRef = collection(db, "user-trails");
   useEffect(() => {
     const onAuthChange = onAuthStateChanged(auth, (user) => {
+      const userContentRef = doc(db, "user-meta", `${user?.uid}`);
+      const userTrailsRef = doc(db, "user-trails", `${user?.uid}`);
       if (user) {
-        const q = query(userTrailsRef, where("uid", "==", user.uid));
-        onSnapshot(q, (querySnapshot) => {
-          const allDocs = querySnapshot.docs.map((doc) => doc.data());
-          console.log(allDocs);
-          setUserTrails(allDocs);
+        //Get User-Meta
+
+        onSnapshot(userContentRef, (querySnapshot) => {
+          const userMeta = querySnapshot.data();
+
+          console.log(userMeta);
+        });
+        //Get User-Trails
+        onSnapshot(userTrailsRef, (querySnapshot) => {
+          const userTrails = querySnapshot.data();
+          console.log(userTrails);
         });
       }
     });
