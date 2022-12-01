@@ -9,6 +9,8 @@ import {
   doc,
   setDoc,
   updateDoc,
+  deleteDoc,
+  deleteField,
 } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
 
@@ -96,4 +98,16 @@ export const updateUserTrails = async (newTrailArg: InterfaceNewTrailArg) => {
   }
 };
 
+export const deleteSingleTrail = async (trailId: string) => {
+  const specificUserTrailsRef = doc(
+    db,
+    "user-trails",
+    `${auth.currentUser?.uid}`
+  );
+  try {
+    await updateDoc(specificUserTrailsRef, { [`${trailId}`]: deleteField() });
+  } catch (err) {
+    console.log(err);
+  }
+};
 export default createNewUser;
