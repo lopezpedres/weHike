@@ -13,3 +13,9 @@ export interface InterfaceNewUserTrail {
     updatedAt: FieldValue;
   };
 }
+//Update trails
+export interface InterfaceUpdateTrailArg {
+  trail_id: string;
+  trail_name?: string;
+  tags?: string[];
+}

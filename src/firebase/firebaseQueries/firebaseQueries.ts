@@ -1,18 +1,15 @@
-import { onAuthStateChanged } from "firebase/auth";
 import {
-  addDoc,
-  collection,
-  onSnapshot,
-  query,
-  where,
   getDoc,
   doc,
   setDoc,
   updateDoc,
-  deleteDoc,
   deleteField,
+  serverTimestamp,
 } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
+import InterfaceNewTrailArg, {
+  InterfaceNewUserTrail,
+} from "./typesFirebaseQueries";
 
 const createNewUser = async () => {
   const userMetaRef = doc(db, "user-meta", String(auth.currentUser?.uid));
@@ -21,11 +18,10 @@ const createNewUser = async () => {
     if (!docSnap.exists()) {
       console.log("Creating User");
       const newUser = {
-        uid: auth.currentUser?.uid,
-        createdAt: new Date(),
+        createdAt: serverTimestamp(),
         email: auth.currentUser?.email,
         name: auth.currentUser?.displayName,
-        updatedAt: new Date(),
+        updatedAt: serverTimestamp(),
       };
       const result = await setDoc(userMetaRef, newUser);
       return result;
@@ -38,24 +34,14 @@ const createNewUser = async () => {
   }
 };
 
-interface InterfaceNewTrailArg {
-  trail_id: string;
-  trail_name: string;
-  tags?: string[];
-}
-interface InterfaceNewUserTrail {
-  [key: string]: {
-    trail_name: string;
-    tags?: string[];
-  };
-}
-
 export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
   const { trail_id, trail_name, tags } = newTrailArg;
   const newTrailObject = {} as InterfaceNewUserTrail;
   newTrailObject[trail_id] = {
     trail_name,
     tags,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
   };
   const specificUserTrailsRef = doc(
     db,
