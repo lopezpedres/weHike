@@ -13,14 +13,14 @@ function App() {
   return (
     <UserContentProvider>
       <LogIn />
-      <MyMap />
-      {/* <div>
+      {/* <MyMap /> */}
+      <div>
         <button onClick={() => createNewUser()}>createNewUser</button>
         <br />
         <button
           onClick={() =>
             addUserTrail({
-              trail_id: "33333",
+              trail_id: "22222",
               trail_name: "Ahora tambien",
               tags: ["fav", "done", "planning"],
             })
@@ -44,7 +44,7 @@ function App() {
         <button onClick={() => deleteSingleTrail("910111213")}>
           Delete Single Trail
         </button>
-      </div> */}
+      </div>
     </UserContentProvider>
   );
 }
