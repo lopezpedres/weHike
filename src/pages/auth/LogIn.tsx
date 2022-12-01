@@ -6,7 +6,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
+// import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
 import { auth } from "../../firebase/firebaseConfig";
 
 const LogIn = () => {
