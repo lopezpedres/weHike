@@ -64,15 +64,7 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
   );
 
   try {
-    const docSnap = await getDoc(specificUserTrailsRef);
-    if (docSnap.exists()) {
-      console.log("Trail already exits");
-      return;
-    } else {
-      const result = await setDoc(specificUserTrailsRef, newTrailObject);
-      console.log(result);
-      return result;
-    }
+    await setDoc(specificUserTrailsRef, newTrailObject, { merge: true });
   } catch (err) {
     console.log(err);
   }
