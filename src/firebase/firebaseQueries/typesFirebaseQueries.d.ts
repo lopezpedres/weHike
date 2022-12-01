@@ -3,12 +3,21 @@ import { FieldValue, GeoPoint } from "firebase/firestore";
 export default interface InterfaceNewTrailArg {
   trail_id: string;
   trail_name: string;
-  tags?: string[];
+  custom_id?: string;
+  tags?: InterfaceTags;
+}
+interface InterfaceTags {
+  fav?: boolean;
+  custom?: boolean;
+  planning?: boolean;
+  done?: boolean;
 }
 export interface InterfaceNewUserTrail {
   [key: string]: {
     trail_name: string;
-    tags?: string[];
+    tags?: InterfaceTags;
+    images_id: string;
+    custom_id?: string | null;
     createdAt: FieldValue;
     updatedAt: FieldValue;
   };
@@ -18,7 +27,7 @@ export interface InterfaceNewUserTrail {
 export interface InterfaceUpdateTrailArg {
   trail_id: string;
   trail_name?: string;
-  tags?: string[];
+  tags?: InterfaceTags;
 }
 
 //Create new Custom Trails
@@ -37,4 +46,27 @@ export interface InterfaceNewCustomTrail {
     createdAt: FieldValue;
     updatedAt: FieldValue;
   };
+}
+
+//Add image to trails
+export interface InterfaceNewImageToTrailArgs {
+  image_name: string;
+  image_description: string;
+  trail_id: string;
+  image_point: GeoPoint;
+}
+export interface InterfaceAllTrailsImages {
+  //Key of User
+  [key: string]: {
+    //Key og
+    [key: string]: InterfaceImagesInSingleTrail;
+  };
+}
+export interface InterfaceImagesInSingleTrail {
+  image_name: string;
+  image_description: string;
+  image_point: GeoPoint;
+  image_url: string;
+  createdAt: FieldValue;
+  updatedAt: FieldValue;
 }

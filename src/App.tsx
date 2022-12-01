@@ -22,9 +22,9 @@ function App() {
         <button
           onClick={() =>
             addUserTrail({
-              trail_id: "33",
+              trail_id: "01",
               trail_name: "Ahora tambien",
-              tags: ["fav", "done", "planning"],
+              tags: { custom: true, planning: true },
             })
           }
         >
@@ -36,7 +36,7 @@ function App() {
             updateUserTrails({
               trail_id: "910111213",
               trail_name: "otro brother",
-              tags: ["fav", "done", "plan", "sisepuede"],
+              tags: { custom: true, planning: false, done: true },
             })
           }
         >

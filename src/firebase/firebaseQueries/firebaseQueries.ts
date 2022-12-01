@@ -6,12 +6,15 @@ import {
   deleteField,
   serverTimestamp,
   GeoPoint,
+  collection,
+  addDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
 import InterfaceNewTrailArg, {
   InterfaceNewCustomTrail,
   InterfaceNewCustomTrailArgs,
+  InterfaceNewImageToTrailArgs,
   InterfaceNewUserTrail,
 } from "./typesFirebaseQueries";
 /**
@@ -45,14 +48,23 @@ const createNewUser = async () => {
  * @param newTrailArg
  */
 export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
-  const { trail_id, trail_name, tags = [] } = newTrailArg;
+  const { trail_id, trail_name, tags, custom_id } = newTrailArg;
+  console.log(custom_id);
   const newTrailObject = {} as InterfaceNewUserTrail;
+  const images_id = uuidv4(); //!Need to create an image doc that matches this id
   newTrailObject[trail_id] = {
     trail_name,
+    custom_id: custom_id ? custom_id : null,
     tags,
+    images_id,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
+  // if (custom_id) {
+  //   newTrailObject.trail_id.custom_id = custom_id;
+  //   console.log("there is a custome Id", newTrailObject);
+  // }
+
   const specificUserTrailsRef = doc(
     db,
     "user-trails",
@@ -81,20 +93,19 @@ export const addCustomTrail = async (
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
-  const specificUserTrailsRef = doc(
-    db,
-    "custom-trails",
-    `${auth.currentUser?.uid}`
-  );
-
+  const specificUserTrailsRef = collection(db, "custom-trails");
   try {
-    await setDoc(specificUserTrailsRef, newCustomTrailObject, { merge: true });
-    await addUserTrail({ trail_id, trail_name, tags: ["custom"] });
+    const { id } = await addDoc(specificUserTrailsRef, newCustomTrailObject);
+    await addUserTrail({
+      trail_id,
+      trail_name,
+      custom_id: id,
+      tags: { planning: true },
+    });
   } catch (err) {
     console.log(err);
   }
 };
-
 /**
  * Updates specific files inside the uid user's label
  * @param newTrailArg
@@ -140,4 +151,24 @@ export const deleteSingleTrail = async (trailId: string) => {
 };
 export default createNewUser;
 
-export const addImageToTrail = () => {};
+// export const addImageToTrail = (trailImageArg:InterfaceNewImageToTrailArgs) => {
+//   const { trail_id, image_description, image_name,image_point } = trailImageArg;
+//   const newTrailObject = {} as InterfaceNewUserTrail;
+//   newTrailObject[trail_id] = {
+//     trail_name,
+//     tags,
+//     createdAt: serverTimestamp(),
+//     updatedAt: serverTimestamp(),
+//   };
+//   const specificUserTrailsRef = doc(
+//     db,
+//     "user-trails",
+//     `${auth.currentUser?.uid}`
+//   );
+
+//   try {
+//     await setDoc(specificUserTrailsRef, newTrailObject, { merge: true });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
