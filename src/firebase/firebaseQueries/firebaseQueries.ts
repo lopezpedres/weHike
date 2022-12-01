@@ -5,12 +5,19 @@ import {
   updateDoc,
   deleteField,
   serverTimestamp,
+  GeoPoint,
 } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
+import { v4 as uuidv4 } from "uuid";
 import InterfaceNewTrailArg, {
+  InterfaceNewCustomTrail,
+  InterfaceNewCustomTrailArgs,
   InterfaceNewUserTrail,
 } from "./typesFirebaseQueries";
-
+/**
+ * Creates a new user in Firebase
+ * @returns
+ */
 const createNewUser = async () => {
   const userMetaRef = doc(db, "user-meta", String(auth.currentUser?.uid));
   try {
@@ -33,9 +40,12 @@ const createNewUser = async () => {
     console.log(err);
   }
 };
-
+/**
+ * Adds a new trail under the user's uid label
+ * @param newTrailArg
+ */
 export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
-  const { trail_id, trail_name, tags } = newTrailArg;
+  const { trail_id, trail_name, tags = [] } = newTrailArg;
   const newTrailObject = {} as InterfaceNewUserTrail;
   newTrailObject[trail_id] = {
     trail_name,
@@ -55,7 +65,40 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
     console.log(err);
   }
 };
+/**
+ * Adds a custome trail under the user's uid label
+ */
+export const addCustomTrail = async (
+  newCustomTrailArgs: InterfaceNewCustomTrailArgs
+) => {
+  const { trail_end, trail_name, trail_start } = newCustomTrailArgs;
+  const newCustomTrailObject = {} as InterfaceNewCustomTrail;
+  const trail_id = uuidv4();
+  newCustomTrailObject[trail_id] = {
+    trail_name,
+    trail_start,
+    trail_end,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  };
+  const specificUserTrailsRef = doc(
+    db,
+    "custom-trails",
+    `${auth.currentUser?.uid}`
+  );
 
+  try {
+    await setDoc(specificUserTrailsRef, newCustomTrailObject, { merge: true });
+    await addUserTrail({ trail_id, trail_name, tags: ["custom"] });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+/**
+ * Updates specific files inside the uid user's label
+ * @param newTrailArg
+ */
 export const updateUserTrails = async (newTrailArg: InterfaceNewTrailArg) => {
   const { trail_id, trail_name, tags } = newTrailArg;
 
@@ -66,6 +109,7 @@ export const updateUserTrails = async (newTrailArg: InterfaceNewTrailArg) => {
   );
   try {
     if (tags)
+      //!When updating the tags name, i need to make sure I am passing the tags that i had before
       await updateDoc(specificUserTrailsRef, { [`${trail_id}.tags`]: tags });
     if (trail_name)
       await updateDoc(specificUserTrailsRef, {
@@ -75,6 +119,12 @@ export const updateUserTrails = async (newTrailArg: InterfaceNewTrailArg) => {
     console.log(err);
   }
 };
+/**
+ * Deletes Trail of user
+ * @param trailId
+ */
+//!Most delete all the data related to that specific trailId in for:
+//!user-trails,custom-trail,notes-trails,images-trails
 
 export const deleteSingleTrail = async (trailId: string) => {
   const specificUserTrailsRef = doc(
@@ -89,3 +139,5 @@ export const deleteSingleTrail = async (trailId: string) => {
   }
 };
 export default createNewUser;
+
+export const addImageToTrail = () => {};

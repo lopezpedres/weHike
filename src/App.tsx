@@ -2,14 +2,16 @@ import MyMap from "./components/Map/MyMap";
 import ImageForm from "./components/ImageForm/ImageForm";
 import UserContentProvider from "./context/UserContentProvider/UserContentProvider";
 import LogIn from "./pages/auth/LogIn";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, GeoPoint } from "firebase/firestore";
 import { db, auth } from "./firebase/firebaseConfig";
 import createNewUser, {
+  addCustomTrail,
   addUserTrail,
   deleteSingleTrail,
   updateUserTrails,
 } from "./firebase/firebaseQueries/firebaseQueries";
 function App() {
+  const start_trail = new GeoPoint(49, -120);
   return (
     <UserContentProvider>
       <LogIn />
@@ -20,7 +22,7 @@ function App() {
         <button
           onClick={() =>
             addUserTrail({
-              trail_id: "22222",
+              trail_id: "33",
               trail_name: "Ahora tambien",
               tags: ["fav", "done", "planning"],
             })
@@ -43,6 +45,18 @@ function App() {
         <br />
         <button onClick={() => deleteSingleTrail("910111213")}>
           Delete Single Trail
+        </button>
+        <br />
+        <button
+          onClick={() =>
+            addCustomTrail({
+              trail_end: start_trail,
+              trail_start: start_trail,
+              trail_name: "Name",
+            })
+          }
+        >
+          Add Custome Trail
         </button>
       </div>
     </UserContentProvider>
