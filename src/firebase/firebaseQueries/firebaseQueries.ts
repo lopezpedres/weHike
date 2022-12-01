@@ -8,6 +8,7 @@ import {
   getDoc,
   doc,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
 
@@ -70,6 +71,26 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
       console.log(result);
       return result;
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateUserTrails = async (newTrailArg: InterfaceNewTrailArg) => {
+  const { trail_id, trail_name, tags } = newTrailArg;
+
+  const specificUserTrailsRef = doc(
+    db,
+    "user-trails",
+    `${auth.currentUser?.uid}`
+  );
+  try {
+    if (tags)
+      await updateDoc(specificUserTrailsRef, { [`${trail_id}.tags`]: tags });
+    if (trail_name)
+      await updateDoc(specificUserTrailsRef, {
+        [`${trail_id}.trail_name`]: trail_name,
+      });
   } catch (err) {
     console.log(err);
   }
