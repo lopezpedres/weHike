@@ -14,6 +14,7 @@ interface InterfaceTags {
 }
 export interface InterfaceNewUserTrail {
   [key: string]: {
+    trail_id: string;
     trail_name: string;
     tags?: InterfaceTags;
     images_id: string;
@@ -40,6 +41,7 @@ export interface InterfaceNewCustomTrailArgs {
 
 export interface InterfaceNewCustomTrail {
   [key: string]: {
+    trail_id: string;
     trail_name: string;
     trail_start: GeoPoint;
     trail_end: GeoPoint;
@@ -52,21 +54,37 @@ export interface InterfaceNewCustomTrail {
 export interface InterfaceNewImageToTrailArgs {
   image_name: string;
   image_description: string;
-  trail_id: string;
-  image_point: GeoPoint;
-}
-export interface InterfaceAllTrailsImages {
-  //Key of User
-  [key: string]: {
-    //Key og
-    [key: string]: InterfaceImagesInSingleTrail;
-  };
-}
-export interface InterfaceImagesInSingleTrail {
-  image_name: string;
-  image_description: string;
   image_point: GeoPoint;
   image_url: string;
-  createdAt: FieldValue;
-  updatedAt: FieldValue;
+  trail_images_id: string;
+}
+export interface InterfaceImagesSingleTrail {
+  [key: string]: {
+    image_id: string;
+    image_name: string;
+    image_description: string;
+    image_point: GeoPoint;
+    image_url: string;
+    createdAt: FieldValue;
+    updatedAt: FieldValue;
+  };
+}
+
+export interface InterfaceNewNoteToTrailArgs {
+  note_content: string;
+  note_title: string;
+  note_point: GeoPoint;
+  trail_notes_id: string;
+}
+
+export interface InterfaceNotesSingleTrail {
+  [key: string]: {
+    createdAt: FieldValue;
+    updatedAt: FieldValue;
+    note_id: string;
+    note_content: string;
+    note_title: string;
+    note_point: GeoPoint;
+    trail_notes_id: string;
+  };
 }

@@ -6,10 +6,12 @@ import { addDoc, collection, GeoPoint } from "firebase/firestore";
 import { db, auth } from "./firebase/firebaseConfig";
 import createNewUser, {
   addCustomTrail,
+  addImageToTrail,
   addUserTrail,
   deleteSingleTrail,
   updateUserTrails,
 } from "./firebase/firebaseQueries/firebaseQueries";
+import { start } from "repl";
 function App() {
   const start_trail = new GeoPoint(49, -120);
   return (
@@ -57,6 +59,20 @@ function App() {
           }
         >
           Add Custome Trail
+        </button>
+        <br />
+        <button
+          onClick={() =>
+            addImageToTrail({
+              trail_images_id: "06a5c3ca-dfa4-438f-a117-68a2a23c5e7b",
+              image_description: "something2",
+              image_name: "image2",
+              image_point: start_trail,
+              image_url: "www.image.co2222",
+            })
+          }
+        >
+          Add Image to Trail
         </button>
       </div>
     </UserContentProvider>

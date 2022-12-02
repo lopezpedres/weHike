@@ -5,17 +5,19 @@ import {
   updateDoc,
   deleteField,
   serverTimestamp,
-  GeoPoint,
   collection,
   addDoc,
 } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
 import InterfaceNewTrailArg, {
+  InterfaceImagesSingleTrail,
   InterfaceNewCustomTrail,
   InterfaceNewCustomTrailArgs,
   InterfaceNewImageToTrailArgs,
+  InterfaceNewNoteToTrailArgs,
   InterfaceNewUserTrail,
+  InterfaceNotesSingleTrail,
 } from "./typesFirebaseQueries";
 /**
  * Creates a new user in Firebase
@@ -51,8 +53,9 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
   const { trail_id, trail_name, tags, custom_id } = newTrailArg;
   console.log(custom_id);
   const newTrailObject = {} as InterfaceNewUserTrail;
-  const images_id = uuidv4(); //!Need to create an image doc that matches this id
+  const images_id = uuidv4(); //!Need to call createImageDoc that matches this id
   newTrailObject[trail_id] = {
+    trail_id,
     trail_name,
     custom_id: custom_id ? custom_id : null,
     tags,
@@ -60,10 +63,6 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
-  // if (custom_id) {
-  //   newTrailObject.trail_id.custom_id = custom_id;
-  //   console.log("there is a custome Id", newTrailObject);
-  // }
 
   const specificUserTrailsRef = doc(
     db,
@@ -87,6 +86,7 @@ export const addCustomTrail = async (
   const newCustomTrailObject = {} as InterfaceNewCustomTrail;
   const trail_id = uuidv4();
   newCustomTrailObject[trail_id] = {
+    trail_id,
     trail_name,
     trail_start,
     trail_end,
@@ -151,24 +151,62 @@ export const deleteSingleTrail = async (trailId: string) => {
 };
 export default createNewUser;
 
-// export const addImageToTrail = (trailImageArg:InterfaceNewImageToTrailArgs) => {
-//   const { trail_id, image_description, image_name,image_point } = trailImageArg;
-//   const newTrailObject = {} as InterfaceNewUserTrail;
-//   newTrailObject[trail_id] = {
-//     trail_name,
-//     tags,
-//     createdAt: serverTimestamp(),
-//     updatedAt: serverTimestamp(),
-//   };
-//   const specificUserTrailsRef = doc(
-//     db,
-//     "user-trails",
-//     `${auth.currentUser?.uid}`
-//   );
+export const addImageToTrail = async (
+  trailImageArg: InterfaceNewImageToTrailArgs
+) => {
+  const {
+    image_description,
+    image_name,
+    image_point,
+    image_url,
+    trail_images_id,
+  } = trailImageArg;
+  const newSingleImageObject = {} as InterfaceImagesSingleTrail;
+  const singleImageObjectId = uuidv4();
+  newSingleImageObject[singleImageObjectId] = {
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    image_description,
+    image_name,
+    image_point,
+    image_url,
+    image_id: singleImageObjectId,
+  };
 
-//   try {
-//     await setDoc(specificUserTrailsRef, newTrailObject, { merge: true });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+  const AllImagesSingleTrailRef = doc(db, "images-trail", `${trail_images_id}`);
+
+  try {
+    await setDoc(AllImagesSingleTrailRef, newSingleImageObject, {
+      merge: true,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addNoteToTrail = async (
+  trailNoteArg: InterfaceNewNoteToTrailArgs
+) => {
+  const { note_content, note_title, note_point, trail_notes_id } = trailNoteArg;
+  const newSingleNoteObject = {} as InterfaceNotesSingleTrail;
+  const singleNoteObjectId = uuidv4();
+  newSingleNoteObject[singleNoteObjectId] = {
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    note_id: singleNoteObjectId,
+    note_content,
+    note_title,
+    note_point,
+    trail_notes_id,
+  };
+
+  const AllImagesSingleTrailRef = doc(db, "images-trail", `${trail_notes_id}`);
+
+  try {
+    await setDoc(AllImagesSingleTrailRef, newSingleNoteObject, {
+      merge: true,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
