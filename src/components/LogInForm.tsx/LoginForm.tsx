@@ -25,7 +25,7 @@ const LoginForm = ({ logInWithGoogle }: Props) => {
             className="rounded-md  mb-4 p-4 border-2 border-primary"
             placeholder="Enter your password"
           />
-          <button className=" font-semibold text-white text-lg my-4 w-full p-4 bg-primary rounded-md">
+          <button className=" shadow-md font-semibold text-white text-lg my-4 w-full p-4 bg-primary rounded-md">
             Submit
           </button>
         </form>

@@ -19,7 +19,7 @@ const LogIn = () => {
       if (user) {
         setActiveUser(user);
         console.log("there is user", user);
-        return navigate("/home");
+        // return navigate("/home");
       } else {
         console.log("there is no user");
       }
