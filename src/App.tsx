@@ -1,7 +1,12 @@
-import MyMap from "./components/MyMap";
+import React from "react";
+import App2 from "./App2";
 
-function App() {
-  return <MyMap />;
-}
+const App = () => {
+  return (
+    <div>
+      <App2 />
+    </div>
+  );
+};
 
 export default App;
