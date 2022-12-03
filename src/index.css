@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
     overflow: hidden;
+} */
+@layer base {
+    @font-face {
+        font-family: NotoSans;
+        fontWheight: '400';
+        src: url('./assets/fonts/NotoSans-Regular.ttf');
+    }
+
+    @font-face {
+        font-family: 'NotoSans';
+        fontWheight: '600';
+        src: url("./assets/fonts/NotoSans-SemiBold.ttf") format('ttf');
+    }
 }
