@@ -53,13 +53,15 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
   const { trail_id, trail_name, tags, custom_id } = newTrailArg;
   console.log(custom_id);
   const newTrailObject = {} as InterfaceNewUserTrail;
-  const images_id = uuidv4(); //!Need to call createImageDoc that matches this id
+  const images_id = uuidv4();
+  const notes_id = uuidv4();
   newTrailObject[trail_id] = {
     trail_id,
     trail_name,
     custom_id: custom_id ? custom_id : null,
     tags,
     images_id,
+    notes_id,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
@@ -200,7 +202,7 @@ export const addNoteToTrail = async (
     trail_notes_id,
   };
 
-  const AllImagesSingleTrailRef = doc(db, "images-trail", `${trail_notes_id}`);
+  const AllImagesSingleTrailRef = doc(db, "notes-trail", `${trail_notes_id}`);
 
   try {
     await setDoc(AllImagesSingleTrailRef, newSingleNoteObject, {

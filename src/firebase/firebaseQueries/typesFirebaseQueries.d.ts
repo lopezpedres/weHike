@@ -21,6 +21,7 @@ export interface InterfaceNewUserTrail {
     custom_id?: string | null;
     createdAt: FieldValue;
     updatedAt: FieldValue;
+    notes_id: string;
   };
 }
 //Update trails
