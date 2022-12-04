@@ -1,6 +1,6 @@
 import { Geometry } from "geojson";
 import React, { useContext, useEffect, useState } from "react";
-import { MapboxGeoJSONFeature, useMap } from "react-map-gl";
+import { Layer, MapboxGeoJSONFeature, useMap } from "react-map-gl";
 import { userContentState } from "../../context/UserContentProvider/UserContentProvider";
 import GeneralListItem from "../GeneralListItem/GeneralListItem";
 //Todo: Need to define all the possible types of my array items
@@ -11,7 +11,7 @@ interface InterfacePropertiesFeature {
   sac_scale?: string | null;
 }
 /**
- * Filters out all the repited features
+ * Filters out all the repited features based on the given comparator
  * @param features
  * @param comparatorProperty
  * @returns
@@ -47,6 +47,8 @@ const GeneralList = () => {
   const width = 1000;
   const height = 1000;
   const afterChangeComplete = () => {
+    console.count("Entering afterChange");
+    console.log("latandlng", lat, lng);
     if (lat && lng) {
       const allFeatures = globalMap?.queryRenderedFeatures(
         [
@@ -60,7 +62,8 @@ const GeneralList = () => {
       );
       // console.log(allFeatures);
       const uniqueFeatures = getUniqueFeatures(allFeatures, "@id");
-      const cleanedFeatures = uniqueFeatures?.map((feature) => {
+      const uniqueNameFeatures = getUniqueFeatures(uniqueFeatures, "name");
+      const cleanedFeatures = uniqueNameFeatures?.map((feature) => {
         const { properties } = feature;
         if (properties) {
           const featureObj: InterfacePropertiesFeature = {
@@ -72,7 +75,7 @@ const GeneralList = () => {
           return featureObj;
         }
       });
-      // const uniqueNames = uniqueFeatures.filter()s
+      // console.log(cleanedFeatures);
       setFeatures(cleanedFeatures);
       globalMap?.off("render", afterChangeComplete);
     }
@@ -81,14 +84,20 @@ const GeneralList = () => {
     //This is a bit complex:
 
     if (globalMap?.loaded()) {
-      afterChangeComplete();
+      console.log("The map is loaded");
+      return afterChangeComplete();
+    } else {
+      console.log("The map is not loading", globalMap);
+      globalMap?.on("load", () => {
+        console.log("loading map");
+        if (!globalMap?.loaded()) {
+          console.log("The map is not loaded");
+          return;
+        }
+        globalMap.on("render", afterChangeComplete);
+      });
     }
-    globalMap?.on("load", () => {
-      console.log("loading map");
-      if (!globalMap?.loaded()) return;
-      globalMap.on("render", afterChangeComplete);
-    });
-  }, []);
+  }, [globalMap, userCurrentLocation]);
   return (
     <ul className="w-full mb-40">
       {features &&

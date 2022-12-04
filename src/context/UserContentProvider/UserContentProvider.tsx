@@ -13,7 +13,6 @@ const userContentState = createContext(defaultState);
 const userContentDispatch = createContext((() => {}) as Dispatch<Action>);
 const UserContentProvider = ({ children }: LayoutProps) => {
   const [state, dispatch] = useReducer(userContentReducer, defaultState);
-  const [userTrails, setUserTrails] = useState<any>(null);
   useEffect(() => {
     const onAuthChange = onAuthStateChanged(auth, (user) => {
       const userContentRef = doc(db, "user-meta", `${user?.uid}`);

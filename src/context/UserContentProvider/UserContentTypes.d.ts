@@ -2,7 +2,8 @@ type TActionOptions =
   | "CHANGE-EMAIL"
   | "CHANGE-PASSWORD"
   | "SET-USER-DATA"
-  | "SET-USER-CURRENT-LOCATION";
+  | "SET-USER-CURRENT-LOCATION"
+  | "SET-SELECTED-TRAIL";
 
 export type State = {
   user: {
@@ -10,6 +11,7 @@ export type State = {
     email: string;
   };
   userCurrentLocation?: GeolocationPosition;
+  selectedTrailName?: string;
 };
 
 interface Action {

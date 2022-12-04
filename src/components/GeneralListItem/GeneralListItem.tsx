@@ -1,5 +1,7 @@
 import { Geometry } from "geojson";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
 
 interface Props {
   id?: string;
@@ -9,6 +11,8 @@ interface Props {
 }
 
 const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
+  const navigate = useNavigate();
+  const dispatch = useContext(userContentDispatch);
   const toSlug = (name: string | undefined) => {
     return (
       name &&
@@ -19,22 +23,27 @@ const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
         .trim()
     );
   };
-  toSlug(name);
+  const clickHandler = (name: string) => {
+    dispatch({ type: "SET-SELECTED-TRAIL", payload: name });
+    navigate(`/${toSlug(name)}`);
+  };
   return (
-    <li className="mx-8 my-4 ">
-      <Link to={`/navigate/${toSlug(name)}`}>
-        <ul className="mx-auto  w-full p-8 shadow-md bg-primary rounded-lg   ">
-          <li>
-            <h2 className="text-3xl font-semibold">{name}</h2>
-          </li>
-          {/* //TODO: Need to have a difficulty chart to display something like easy, */}
-          medium, hard
-          {/* <li>Difficulty:{sac_scale ? sac_scale : "Not available"}</li> */}
-          <li>Elevation</li>
-          <li>Distance</li>
-        </ul>
-      </Link>
-    </li>
+    <>
+      {name && (
+        <li onClick={() => clickHandler(name)} className="mx-8 my-4 ">
+          <ul className="mx-auto  w-full p-8 shadow-md bg-primary rounded-lg   ">
+            <li>
+              <h2 className="text-3xl font-semibold">{name}</h2>
+            </li>
+            {/* //TODO: Need to have a difficulty chart to display something like easy, */}
+            medium, hard
+            {/* <li>Difficulty:{sac_scale ? sac_scale : "Not available"}</li> */}
+            <li>Elevation</li>
+            <li>Distance</li>
+          </ul>
+        </li>
+      )}
+    </>
   );
 };
 
