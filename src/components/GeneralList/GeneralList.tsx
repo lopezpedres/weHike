@@ -10,11 +10,34 @@ interface InterfacePropertiesFeature {
   geometry: Geometry;
   sac_scale?: string | null;
 }
+/**
+ * Filters out all the repited features
+ * @param features
+ * @param comparatorProperty
+ * @returns
+ */
+const getUniqueFeatures = (
+  features: MapboxGeoJSONFeature[] | undefined,
+  comparatorProperty: string
+) => {
+  const uniqueIds = new Set();
+  const uniqueFeatures = [];
+  if (features) {
+    for (const feature of features) {
+      const id = feature.properties && feature.properties[comparatorProperty];
+      if (!uniqueIds.has(id)) {
+        uniqueIds.add(id);
+        uniqueFeatures.push(feature);
+      }
+    }
+  }
+  return uniqueFeatures;
+};
 
 const GeneralList = () => {
   const { globalMap } = useMap();
-  const [features, setFeatures] = useState<InterfacePropertiesFeature[]>();
-  console.log(globalMap);
+  const [features, setFeatures] =
+    useState<(InterfacePropertiesFeature | undefined)[]>();
   const { userCurrentLocation } = useContext(userContentState);
   const coordinates = userCurrentLocation?.coords;
   const lat = coordinates?.latitude;
@@ -32,38 +55,50 @@ const GeneralList = () => {
         ],
         {
           layers: ["trails"],
+          filter: ["all", ["has", "name"]],
         }
       );
-      console.log(allFeatures);
-      const cleanedFeatures = allFeatures?.map((feature) => {
-        const properties = feature.properties as InterfacePropertiesFeature;
-        const featureObj = {
-          id: properties.id,
-          name: properties.name,
-          geometry: feature.geometry,
-        };
-        return featureObj;
+      // console.log(allFeatures);
+      const uniqueFeatures = getUniqueFeatures(allFeatures, "@id");
+      const cleanedFeatures = uniqueFeatures?.map((feature) => {
+        const { properties } = feature;
+        if (properties) {
+          const featureObj: InterfacePropertiesFeature = {
+            id: properties["@id"],
+            name: properties.name,
+            geometry: feature.geometry,
+            sac_scale: properties.sac_scale,
+          };
+          return featureObj;
+        }
       });
-
+      // const uniqueNames = uniqueFeatures.filter()s
       setFeatures(cleanedFeatures);
       globalMap?.off("render", afterChangeComplete);
     }
   };
-  globalMap?.on("load", () => {
-    console.log("loading map");
-    if (!globalMap?.loaded()) return;
-    globalMap.on("render", afterChangeComplete);
-  });
+  useEffect(() => {
+    //This is a bit complex:
+
+    if (globalMap?.loaded()) {
+      afterChangeComplete();
+    }
+    globalMap?.on("load", () => {
+      console.log("loading map");
+      if (!globalMap?.loaded()) return;
+      globalMap.on("render", afterChangeComplete);
+    });
+  }, []);
   return (
-    <ul className="w-full">
+    <ul className="w-full mb-40">
       {features &&
-        features.map((item, index) => (
+        features.map((item) => (
           <GeneralListItem
-            key={item.id}
-            geometry={item.geometry}
-            id={item.id}
-            name={item.name}
-            sac_scale={item.sac_scale}
+            key={item?.id}
+            geometry={item?.geometry}
+            id={item?.id}
+            name={item?.name}
+            sac_scale={item?.sac_scale}
           />
         ))}
     </ul>
