@@ -8,7 +8,6 @@ import { collection, where, query, onSnapshot, doc } from "firebase/firestore";
 interface LayoutProps {
   children: React.ReactNode;
 }
-
 const defaultState: State = {} as State;
 const userContentState = createContext(defaultState);
 const userContentDispatch = createContext((() => {}) as Dispatch<Action>);
@@ -21,7 +20,6 @@ const UserContentProvider = ({ children }: LayoutProps) => {
       const userTrailsRef = doc(db, "user-trails", `${user?.uid}`);
       if (user) {
         //Get User-Meta
-
         onSnapshot(userContentRef, (querySnapshot) => {
           const userMeta = querySnapshot.data();
 

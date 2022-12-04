@@ -7,6 +7,8 @@ const ModuleReducer = (state: State, action: Action): State => {
       return action.payload;
     case "CHANGE-PASSWORD":
       return { ...state, user: { ...state.user, password: action.payload } };
+    case "SET-USER-CURRENT-LOCATION":
+      return { ...state, userCurrentLocation: action.payload };
     default:
       return state;
   }
