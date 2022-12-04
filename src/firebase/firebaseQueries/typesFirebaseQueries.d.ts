@@ -1,4 +1,6 @@
 import { FieldValue, GeoPoint } from "firebase/firestore";
+//? Should I start my randomId's with a the prefix of it;s object type?
+//?For example imageId: 21-32432-23432-234 (All image object will start with 21) and so on...
 //Add new trail
 export default interface InterfaceNewTrailArg {
   trail_id: string;
