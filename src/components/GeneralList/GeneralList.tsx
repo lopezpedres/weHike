@@ -1,12 +1,17 @@
 import React from "react";
+import { useMap } from "react-map-gl";
 import GeneralListItem from "../GeneralListItem/GeneralListItem";
 //Todo: Need to define all the possible types of my array items
-const GeneralList = ({ pathNames }: any | string[] | null | undefined) => {
-  console.log(pathNames);
+const GeneralList = () => {
+  const { globalMap } = useMap();
+  const pathNames = [{ title: "Name 1" }];
+  console.log(globalMap);
   return (
-    <ul className="overflow-y-scroll h-[100px]">
+    <ul className="w-full">
       {pathNames &&
-        pathNames.map((item: string) => <GeneralListItem item={item} />)}
+        pathNames.map((item, index) => (
+          <GeneralListItem key={index} item={item} />
+        ))}
     </ul>
   );
 };

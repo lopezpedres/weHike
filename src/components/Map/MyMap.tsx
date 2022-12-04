@@ -79,10 +79,11 @@ const MyMap = () => {
     <div>
       <Map
         {...viewState}
+        id="myMap"
         ref={mapRef}
         onClick={(e) => displayRoute(e)}
         onMove={(evt) => setViewState(evt.viewState)}
-        style={{ width: "100vw", height: "70vh" }}
+        style={{ width: "100vw", height: "91vh" }}
         mapStyle="mapbox://styles/lopezpedres/claprud1h002i15o6cuq5tg54"
         mapboxAccessToken={MAP_BOX_TOKEN}
         terrain={{ source: "mapbox-dem", exaggeration: 2 }}
