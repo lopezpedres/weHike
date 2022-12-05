@@ -8,20 +8,17 @@ import { collection, where, query, onSnapshot, doc } from "firebase/firestore";
 interface LayoutProps {
   children: React.ReactNode;
 }
-
 const defaultState: State = {} as State;
 const userContentState = createContext(defaultState);
 const userContentDispatch = createContext((() => {}) as Dispatch<Action>);
 const UserContentProvider = ({ children }: LayoutProps) => {
   const [state, dispatch] = useReducer(userContentReducer, defaultState);
-  const [userTrails, setUserTrails] = useState<any>(null);
   useEffect(() => {
     const onAuthChange = onAuthStateChanged(auth, (user) => {
       const userContentRef = doc(db, "user-meta", `${user?.uid}`);
       const userTrailsRef = doc(db, "user-trails", `${user?.uid}`);
       if (user) {
         //Get User-Meta
-
         onSnapshot(userContentRef, (querySnapshot) => {
           const userMeta = querySnapshot.data();
 
