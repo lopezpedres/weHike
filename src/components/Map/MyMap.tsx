@@ -76,7 +76,7 @@ const MyMap = () => {
     // }
   };
   return (
-    <div>
+    <div className="fixed">
       <Map
         {...viewState}
         id="myMap"
