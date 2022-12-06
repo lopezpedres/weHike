@@ -31,7 +31,7 @@ interface bboxInterface {
 }
 const start: Position = [-123.01484612998101, 49.95358547262097];
 const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
-const MyMap = () => {
+const NavigateMap = () => {
   // const { userCurrentLocation } = useContext(userContentState);
   // const coordinates = userCurrentLocation?.coords;
   // let lat = coordinates?.latitude;
@@ -129,4 +129,4 @@ const MyMap = () => {
   );
 };
 
-export default MyMap;
+export default NavigateMap;

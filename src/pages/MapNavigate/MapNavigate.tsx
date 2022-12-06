@@ -1,4 +1,4 @@
-import MyMap from "../../components/Map/MyMap";
+import MyMap from "../../components/NavigateMap/NavigateMap";
 import { useMap } from "react-map-gl";
 import Navbar from "../../components/navbar/Navbar";
 

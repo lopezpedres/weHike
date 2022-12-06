@@ -6,6 +6,7 @@ import getUniqueFeatures from "../../utils/getUniqueFeatures";
 import { InterfacePropertiesFeature } from "./typesGeneralList";
 import getElevationGain from "../../utils/getElevationGain";
 import turfCombine from "@turf/combine";
+import center from "@turf/center";
 import { featureCollection } from "@turf/helpers";
 import { FeatureCollection, LineString } from "geojson";
 
@@ -39,27 +40,27 @@ const GeneralList = () => {
       const uniqueNameFeatures = getUniqueFeatures(uniqueFeatures, "name");
       const cleanedFeatures = uniqueNameFeatures?.map((feature) => {
         // // //Get just the features of the given name
-        // const featuresNameGroup = uniqueFeatures.filter(
-        //   (f) => f.properties?.name === feature.properties?.name
-        // );
+        const featuresNameGroup = uniqueFeatures.filter(
+          (f) => f.properties?.name === feature.properties?.name
+        );
         // const
         // // // const newFeaturesCollection = featuresNameGroup.filter(
         // // //   (feature) => feature.geometry.type === "LineString"
         // // // );
         // // const featuresCollectionTurf = featureCollection(featuresNameGroup);
-        // const featuresCollectionTurf: FeatureCollection<LineString> = featureCollection(featuresNameGroup);
+
+        const featuresCollectionTurf = featureCollection(featuresNameGroup);
 
         // // // !: How tf can I do it without the ts-ignore?
-        // //// @ts-ignore: Unreachable code error
-        // const featuresCombined = turfCombine(featuresCollectionTurf);
-        // console.log(feature.properties?.name, featuresCombined);
+        // @ts-ignore: Unreachable code error
+        const featureCenter = center(featuresCollectionTurf);
         // // const elevationFeaturesByName = getElevationGain(featuresCombined)
         const { properties } = feature;
         if (properties) {
           const featureObj: InterfacePropertiesFeature = {
             id: properties["@id"],
             name: properties.name,
-            geometry: feature.geometry,
+            geometry: featureCenter.geometry.coordinates,
             sac_scale: properties.sac_scale,
           };
           return featureObj;

@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@mapbox/mapbox-gl-directions": "^4.1.0",
+    "@turf/center": "^6.5.0",
+    "@turf/centroid": "^6.5.0",
     "@turf/combine": "^6.5.0",
+    "@turf/envelope": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "@types/geojson": "^7946.0.10",
     "exifr": "^7.1.3",

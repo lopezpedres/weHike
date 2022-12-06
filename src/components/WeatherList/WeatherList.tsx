@@ -8,6 +8,7 @@ const WeatherList = () => {
 
   //Getting data from API
   const getData = async () => {
+    //TODO:Need to pass the actual coordinates of the trail to the getWeatherData
     const { daily } = await getWeatherData();
     setForecast(daily);
   };

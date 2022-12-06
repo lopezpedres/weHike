@@ -1,4 +1,4 @@
-import { Geometry } from "geojson";
+import { Geometry, Point, Position } from "geojson";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
@@ -6,11 +6,13 @@ import { userContentDispatch } from "../../context/UserContentProvider/UserConte
 interface Props {
   id?: string;
   name?: string;
-  geometry?: Geometry;
+  geometry?: Position;
   sac_scale?: string | null;
 }
 
 const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
+  // const randomTrailCenter: Position | false =
+  //   geometry?.type === "LineString" && geometry.coordinates[0];
   const navigate = useNavigate();
   const dispatch = useContext(userContentDispatch);
   const toSlug = (name: string | undefined) => {
@@ -24,9 +26,16 @@ const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
     );
   };
   const clickHandler = (name: string) => {
-    dispatch({ type: "SET-SELECTED-TRAIL", payload: name });
     navigate(`/trails/${toSlug(name)}`);
+    dispatch({ type: "SET-SELECTED-TRAIL-NAME", payload: name });
+    if (geometry) {
+      dispatch({
+        type: "SET-SELECTED-TRAIL-CENTER",
+        payload: geometry,
+      });
+    }
   };
+
   return (
     <>
       {name && (
