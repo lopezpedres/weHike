@@ -7,6 +7,15 @@ import Map, {
 import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
 
 const GlobalMap = () => {
+  const lat = 49.246292;
+  const lng = -123.116226;
+  const defaultViewState = {
+    latitude: lat,
+    longitude: lng,
+    //Zoom here is super important, otherwise, I wont be able to get my trails
+    //12 seems to be ideal
+    zoom: 12,
+  };
   const globalMapRef = useRef<MapRef | null>(null);
   const dispatch = useContext(userContentDispatch);
   const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
@@ -34,11 +43,12 @@ const GlobalMap = () => {
   );
   return (
     <Map
+      {...defaultViewState}
       id="globalMap"
       ref={globalMapRef}
       mapStyle="mapbox://styles/lopezpedres/claprud1h002i15o6cuq5tg54"
       mapboxAccessToken={MAP_BOX_TOKEN}
-      //   style={{ width: "100vw", height: "95vh" }}
+      // style={{ width: "100vw", height: "95vh" }}
     >
       <GeolocateControl ref={geolocateControlRef} />
     </Map>

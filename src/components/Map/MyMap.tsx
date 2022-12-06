@@ -9,7 +9,7 @@ import Map, {
   FullscreenControl,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import skyLayer from "../../Layers/skyLayer";
 import routeLayer from "../../Layers/routeLayer";
 import getPointToPointRoute from "../../Sources/getPointToPointRoute";
@@ -21,6 +21,7 @@ import BboxButton from "../BboxButton/BboxButton";
 import Options from "../options/Options";
 import getBoundingBoxPoints from "../../utils/getBoundingBoxPoints";
 import GeneralList from "../GeneralList/GeneralList";
+import { userContentState } from "../../context/UserContentProvider/UserContentProvider";
 
 interface bboxInterface {
   south: number;
@@ -30,12 +31,18 @@ interface bboxInterface {
 }
 const start: Position = [-123.01484612998101, 49.95358547262097];
 const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
-const defaultViewState = {
-  latitude: 49.95358547262097,
-  longitude: -123.01484612998101,
-  zoom: 14,
-};
 const MyMap = () => {
+  // const { userCurrentLocation } = useContext(userContentState);
+  // const coordinates = userCurrentLocation?.coords;
+  // let lat = coordinates?.latitude;
+  // let lng = coordinates?.longitude;
+  const lat = 49.246292;
+  const lng = -123.116226;
+  const defaultViewState = {
+    latitude: lat,
+    longitude: lng,
+    zoom: 14,
+  };
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = useState(defaultViewState);
   const [geojsonRouteSource, setGeojsonRouteSource] = useState<Feature | null>(
@@ -52,10 +59,8 @@ const MyMap = () => {
 
   //Todo:Need to move this to handlers
   const displayRoute = async (e: MapLayerMouseEvent) => {
-    const lng = e.lngLat.lng;
-    const lat = e.lngLat.lat;
     console.log(e.point);
-    const width = 50;
+    const width = 100;
     const height = 100;
     const features = mapRef.current?.queryRenderedFeatures(
       [
@@ -63,7 +68,7 @@ const MyMap = () => {
         [e.point.x + width / 2, e.point.y + height / 2],
       ],
       {
-        layers: ["trails"],
+        layers: ["updated_trails"],
       }
     );
     console.log(features);
@@ -76,7 +81,7 @@ const MyMap = () => {
     // }
   };
   return (
-    <div>
+    <div className="fixed">
       <Map
         {...viewState}
         id="myMap"
