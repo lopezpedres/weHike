@@ -1,7 +1,7 @@
-import profile from "../../assets/icons/profile.svg";
-import bookmark from "../../assets/icons/bookmark.svg";
-import search from "../../assets/icons/search.svg";
-import mapPin from "../../assets/icons/map-pin.svg";
+import profile from "/assets/icons/profile.svg";
+import bookmark from "/assets/icons/bookmark.svg";
+import search from "/assets/icons/search.svg";
+import mapPin from "/assets/icons/map-pin.svg";
 import { Link } from "react-router-dom";
 
 interface Props {

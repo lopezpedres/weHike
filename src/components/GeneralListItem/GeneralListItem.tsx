@@ -25,13 +25,13 @@ const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
   };
   const clickHandler = (name: string) => {
     dispatch({ type: "SET-SELECTED-TRAIL", payload: name });
-    navigate(`/${toSlug(name)}`);
+    navigate(`/trails/${toSlug(name)}`);
   };
   return (
     <>
       {name && (
         <li onClick={() => clickHandler(name)} className="mx-8 my-4 ">
-          <ul className="mx-auto  w-full p-6 shadow-md rounded-lg   ">
+          <ul className="mx-auto border-primary  w-full p-6 shadow-md rounded-lg   ">
             <li className="pb-4">
               <h2 className="text-2xl truncate hover:text-clip">{name}</h2>
               <span className="text-[green]">easy</span>

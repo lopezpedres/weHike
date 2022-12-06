@@ -7,6 +7,7 @@ import { InterfacePropertiesFeature } from "./typesGeneralList";
 import getElevationGain from "../../utils/getElevationGain";
 import turfCombine from "@turf/combine";
 import { featureCollection } from "@turf/helpers";
+import { FeatureCollection, LineString } from "geojson";
 
 const GeneralList = () => {
   const { globalMap } = useMap();
@@ -21,7 +22,6 @@ const GeneralList = () => {
   const width = 1000000;
   const height = 100000;
   const afterChangeComplete = () => {
-    console.log(globalMap?.getStyle().layers);
     if (lat && lng && globalMap) {
       // lat = 49.246292;
       // lng = -123.116226;
@@ -38,16 +38,19 @@ const GeneralList = () => {
       const uniqueFeatures = getUniqueFeatures(allFeatures, "@id"); //Always need this
       const uniqueNameFeatures = getUniqueFeatures(uniqueFeatures, "name");
       const cleanedFeatures = uniqueNameFeatures?.map((feature) => {
-        // //Get just the features of the given name
-        // const featuresNameGroup = uniqueNameFeatures.filter(
+        // // //Get just the features of the given name
+        // const featuresNameGroup = uniqueFeatures.filter(
         //   (f) => f.properties?.name === feature.properties?.name
         // );
-        // // const newFeaturesCollection = featuresNameGroup.filter(
-        // //   (feature) => feature.geometry.type === "LineString"
-        // // );
-        // const featuresCollectionTurf = featureCollection(featuresNameGroup);
-        // // !: How tf can I do it without the ts-ignore?
-        // // @ts-ignore: Unreachable code error
+        // const
+        // // // const newFeaturesCollection = featuresNameGroup.filter(
+        // // //   (feature) => feature.geometry.type === "LineString"
+        // // // );
+        // // const featuresCollectionTurf = featureCollection(featuresNameGroup);
+        // const featuresCollectionTurf: FeatureCollection<LineString> = featureCollection(featuresNameGroup);
+
+        // // // !: How tf can I do it without the ts-ignore?
+        // //// @ts-ignore: Unreachable code error
         // const featuresCombined = turfCombine(featuresCollectionTurf);
         // console.log(feature.properties?.name, featuresCombined);
         // // const elevationFeaturesByName = getElevationGain(featuresCombined)
@@ -62,7 +65,6 @@ const GeneralList = () => {
           return featureObj;
         }
       });
-      console.log(cleanedFeatures);
       setFeatures(cleanedFeatures);
       globalMap?.off("render", afterChangeComplete);
     }
@@ -86,7 +88,7 @@ const GeneralList = () => {
     }
   }, [globalMap, userCurrentLocation]);
   return (
-    <ul className="w-full mt-32 mb-40">
+    <ul className="w-full mt-2 mb-40">
       {features &&
         features.map((item) => (
           <GeneralListItem
