@@ -35,50 +35,22 @@ const GeneralList = () => {
           filter: ["all", ["has", "name"]],
         }
       );
-      // console.log(allFeatures);
-      // console.log(allFeatures);
-      const uniqueFeatures = getUniqueFeatures(allFeatures, "@id");
+      const uniqueFeatures = getUniqueFeatures(allFeatures, "@id"); //Always need this
       const uniqueNameFeatures = getUniqueFeatures(uniqueFeatures, "name");
       const cleanedFeatures = uniqueNameFeatures?.map((feature) => {
-        const featuresNameGroup = uniqueNameFeatures.filter(
-          (f) => f.properties?.name === feature.properties?.name
-        );
-        // const newFeaturesCollection = featuresNameGroup.filter((feature) => {
-        //   if (feature.geometry.type == "LineString") {
-        //     const objectFeature = {
-        //       type: feature,
-        //       properties: feature.properties,
-        //       geometry: {
-        //         type: feature.geometry.type,
-        //         coordinates: feature.geometry.coordinates,
-        //       },
-        //     };
-        //     return objectFeature;
-        //   }
-        // });
-        const newFeaturesCollection = featuresNameGroup.filter(
-          (feature) => feature.geometry.type === "LineString"
-        );
-        console.log(newFeaturesCollection);
-        const noUndefinedFeaturesCollection = newFeaturesCollection.filter(
-          (element) => {
-            return element?.type !== undefined;
-          }
-        );
-        if (noUndefinedFeaturesCollection) {
-          const featuresCollectionTurf = featureCollection(
-            newFeaturesCollection
-          );
-          //!: How tf can I do it without the ts-ignore?
-          // @ts-ignore: Unreachable code error
-          const featuresCombined = turfCombine(featuresCollectionTurf);
-          console.log(featuresCombined);
-        }
-        // const elevationNameGroup = getElevationGain(
-        //   featuresNameGroup,
-        //   globalMap
+        // //Get just the features of the given name
+        // const featuresNameGroup = uniqueNameFeatures.filter(
+        //   (f) => f.properties?.name === feature.properties?.name
         // );
-        // console.log(`${feature.properties?.name}`, featuresNameGroup);
+        // // const newFeaturesCollection = featuresNameGroup.filter(
+        // //   (feature) => feature.geometry.type === "LineString"
+        // // );
+        // const featuresCollectionTurf = featureCollection(featuresNameGroup);
+        // // !: How tf can I do it without the ts-ignore?
+        // // @ts-ignore: Unreachable code error
+        // const featuresCombined = turfCombine(featuresCollectionTurf);
+        // console.log(feature.properties?.name, featuresCombined);
+        // // const elevationFeaturesByName = getElevationGain(featuresCombined)
         const { properties } = feature;
         if (properties) {
           const featureObj: InterfacePropertiesFeature = {
