@@ -31,15 +31,22 @@ const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
     <>
       {name && (
         <li onClick={() => clickHandler(name)} className="mx-8 my-4 ">
-          <ul className="mx-auto  w-full p-8 shadow-md bg-primary rounded-lg   ">
-            <li>
-              <h2 className="text-3xl font-semibold">{name}</h2>
+          <ul className="mx-auto  w-full p-6 shadow-md rounded-lg   ">
+            <li className="pb-4">
+              <h2 className="text-2xl truncate hover:text-clip">{name}</h2>
+              <span className="text-[green]">easy</span>
             </li>
-            {/* //TODO: Need to have a difficulty chart to display something like easy, */}
-            medium, hard
-            {/* <li>Difficulty:{sac_scale ? sac_scale : "Not available"}</li> */}
-            <li>Elevation</li>
-            <li>Distance</li>
+            <li className="flex justify-between items-end">
+              <div>
+                <span className="block text-xs">ELEVATION GAIN</span>
+                <span className="text-4xl font-semibold">2768 m </span>
+              </div>
+              <div>
+                <button className=" text-xs rounded-2xl border-2 border-primary bg-white right-0 py-2 px-4">
+                  SAVE
+                </button>
+              </div>
+            </li>
           </ul>
         </li>
       )}

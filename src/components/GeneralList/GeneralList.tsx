@@ -1,38 +1,12 @@
-import { Geometry } from "geojson";
-import React, { useContext, useEffect, useState } from "react";
-import { Layer, MapboxGeoJSONFeature, useMap } from "react-map-gl";
+import { useContext, useEffect, useState } from "react";
+import { useMap } from "react-map-gl";
 import { userContentState } from "../../context/UserContentProvider/UserContentProvider";
 import GeneralListItem from "../GeneralListItem/GeneralListItem";
-//Todo: Need to define all the possible types of my array items
-interface InterfacePropertiesFeature {
-  id: string;
-  name: string;
-  geometry: Geometry;
-  sac_scale?: string | null;
-}
-/**
- * Filters out all the repited features based on the given comparator
- * @param features
- * @param comparatorProperty
- * @returns
- */
-const getUniqueFeatures = (
-  features: MapboxGeoJSONFeature[] | undefined,
-  comparatorProperty: string
-) => {
-  const uniqueIds = new Set();
-  const uniqueFeatures = [];
-  if (features) {
-    for (const feature of features) {
-      const id = feature.properties && feature.properties[comparatorProperty];
-      if (!uniqueIds.has(id)) {
-        uniqueIds.add(id);
-        uniqueFeatures.push(feature);
-      }
-    }
-  }
-  return uniqueFeatures;
-};
+import getUniqueFeatures from "../../utils/getUniqueFeatures";
+import { InterfacePropertiesFeature } from "./typesGeneralList";
+import getElevationGain from "../../utils/getElevationGain";
+import turfCombine from "@turf/combine";
+import { featureCollection } from "@turf/helpers";
 
 const GeneralList = () => {
   const { globalMap } = useMap();
@@ -40,30 +14,71 @@ const GeneralList = () => {
     useState<(InterfacePropertiesFeature | undefined)[]>();
   const { userCurrentLocation } = useContext(userContentState);
   const coordinates = userCurrentLocation?.coords;
-  const lat = coordinates?.latitude;
-  const lng = coordinates?.longitude;
+  let lat = coordinates?.latitude;
+  let lng = coordinates?.longitude;
   //lat->y
   //lon->x
-  const width = 1000;
-  const height = 1000;
+  const width = 1000000;
+  const height = 100000;
   const afterChangeComplete = () => {
-    console.count("Entering afterChange");
-    console.log("latandlng", lat, lng);
-    if (lat && lng) {
+    console.log(globalMap?.getStyle().layers);
+    if (lat && lng && globalMap) {
+      // lat = 49.246292;
+      // lng = -123.116226;
       const allFeatures = globalMap?.queryRenderedFeatures(
         [
           [lng - width / 2, lat - height / 2],
           [lng + width / 2, lat + height / 2],
         ],
         {
-          layers: ["trails"],
+          layers: ["updated_trails"],
           filter: ["all", ["has", "name"]],
         }
       );
       // console.log(allFeatures);
+      // console.log(allFeatures);
       const uniqueFeatures = getUniqueFeatures(allFeatures, "@id");
       const uniqueNameFeatures = getUniqueFeatures(uniqueFeatures, "name");
       const cleanedFeatures = uniqueNameFeatures?.map((feature) => {
+        const featuresNameGroup = uniqueNameFeatures.filter(
+          (f) => f.properties?.name === feature.properties?.name
+        );
+        // const newFeaturesCollection = featuresNameGroup.filter((feature) => {
+        //   if (feature.geometry.type == "LineString") {
+        //     const objectFeature = {
+        //       type: feature,
+        //       properties: feature.properties,
+        //       geometry: {
+        //         type: feature.geometry.type,
+        //         coordinates: feature.geometry.coordinates,
+        //       },
+        //     };
+        //     return objectFeature;
+        //   }
+        // });
+        const newFeaturesCollection = featuresNameGroup.filter(
+          (feature) => feature.geometry.type === "LineString"
+        );
+        console.log(newFeaturesCollection);
+        const noUndefinedFeaturesCollection = newFeaturesCollection.filter(
+          (element) => {
+            return element?.type !== undefined;
+          }
+        );
+        if (noUndefinedFeaturesCollection) {
+          const featuresCollectionTurf = featureCollection(
+            newFeaturesCollection
+          );
+          //!: How tf can I do it without the ts-ignore?
+          // @ts-ignore: Unreachable code error
+          const featuresCombined = turfCombine(featuresCollectionTurf);
+          console.log(featuresCombined);
+        }
+        // const elevationNameGroup = getElevationGain(
+        //   featuresNameGroup,
+        //   globalMap
+        // );
+        // console.log(`${feature.properties?.name}`, featuresNameGroup);
         const { properties } = feature;
         if (properties) {
           const featureObj: InterfacePropertiesFeature = {
@@ -75,7 +90,7 @@ const GeneralList = () => {
           return featureObj;
         }
       });
-      // console.log(cleanedFeatures);
+      console.log(cleanedFeatures);
       setFeatures(cleanedFeatures);
       globalMap?.off("render", afterChangeComplete);
     }
@@ -99,7 +114,7 @@ const GeneralList = () => {
     }
   }, [globalMap, userCurrentLocation]);
   return (
-    <ul className="w-full mb-40">
+    <ul className="w-full mt-32 mb-40">
       {features &&
         features.map((item) => (
           <GeneralListItem
