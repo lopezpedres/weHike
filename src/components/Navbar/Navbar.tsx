@@ -3,9 +3,10 @@ import bookmark from "/assets/icons/bookmark.svg";
 import search from "/assets/icons/search.svg";
 import mapPin from "/assets/icons/map-pin.svg";
 import { Link } from "react-router-dom";
+import { SearchIcon } from "../SearchIcon/SearchIcon";
 
 interface Props {
-  activeNavbar: boolean;
+  activeNavbar?: boolean;
 }
 const Navbar = ({ activeNavbar = true }: Props) => {
   return (
@@ -15,7 +16,9 @@ const Navbar = ({ activeNavbar = true }: Props) => {
           <ul className="flex justify-between ">
             <Link to={"/"}>
               <li className="flex flex-col items-center">
-                <img className="w-8 pt-2" src={search} />
+                <div className="w-8 pt-2">
+                  <SearchIcon />
+                </div>
                 <span className="mt-2 text-sm">Search</span>
               </li>
             </Link>
@@ -31,7 +34,7 @@ const Navbar = ({ activeNavbar = true }: Props) => {
                 <span className="mt-2 text-sm">Saved</span>
               </li>
             </Link>
-            <Link to={"/"}>
+            <Link to={"/login"}>
               <li className="flex flex-col items-center">
                 <img className="w-8 pt-2" src={profile} />
                 <span className="mt-2 text-sm">Profile</span>

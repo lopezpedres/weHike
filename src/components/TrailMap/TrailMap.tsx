@@ -33,22 +33,11 @@ const TrailMap = ({ setShowMap }: Props) => {
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = useState(defaultViewState);
   const onLoadHandler = (target: mapboxgl.Map) => {
-    const width = 1000;
-    const height = 1000;
-    target.queryRenderedFeatures(
-      [
-        [longitude - width / 2, latitude - height / 2],
-        [longitude + width / 2, latitude + height / 2],
-      ],
-      {
-        layers: ["updated_trails"],
-        filter: [
-          "all",
-          ["match", ["get", "name"], [`${trailName}`], true, false],
-        ],
-      }
-    );
     target.flyTo({ center: { lat: latitude, lng: longitude }, zoom: 15 });
+    target.setFilter("updated_trails", [
+      "all",
+      ["match", ["get", "name"], [trailName], true, false],
+    ]);
   };
   return (
     <div className="fixed">

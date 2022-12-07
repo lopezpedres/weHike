@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import unixToDate from "../../utils/unixToDate";
 import { Temp, WeatherEntity } from "../WeatherList/typesWeatherList";
 

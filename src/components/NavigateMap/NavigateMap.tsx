@@ -7,9 +7,10 @@ import Map, {
   Source,
   GeolocateControl,
   FullscreenControl,
+  GeolocateControlRef,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useContext, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import skyLayer from "../../Layers/skyLayer";
 import routeLayer from "../../Layers/routeLayer";
 import getPointToPointRoute from "../../Sources/getPointToPointRoute";
@@ -80,6 +81,11 @@ const NavigateMap = () => {
     //   setGeojsonRouteSource(poitToPointGeojsonRoute);
     // }
   };
+  const geolocateControlRef = useCallback((ref: GeolocateControlRef | null) => {
+    if (ref) {
+      ref.trigger();
+    }
+  }, []);
   return (
     <div className="fixed">
       <Map
@@ -111,7 +117,7 @@ const NavigateMap = () => {
           <Layer {...startPointLayer} />
         </Source>
         <NavigationControl />
-        <GeolocateControl />
+        <GeolocateControl ref={geolocateControlRef} />
         {displayBbox && (
           <BoundingBox setCurrentBbox={setCurrentBbox} mapRef={mapRef} />
         )}

@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { userContentState } from "../../context/UserContentProvider/UserContentProvider";
 import getWeatherData from "../../utils/getWeatherData";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import { DailyEntity, Weather } from "./typesWeatherList";
 
 const WeatherList = () => {
   const [forecast, setForecast] = useState<DailyEntity[] | null | undefined>();
+  const { selectedtrailDetails } = useContext(userContentState);
+  const { trailCenter } = selectedtrailDetails;
 
   //Getting data from API
   const getData = async () => {
-    //TODO:Need to pass the actual coordinates of the trail to the getWeatherData
-    const { daily } = await getWeatherData();
-    setForecast(daily);
+    const { daily } = await getWeatherData(trailCenter);
+    if (daily) {
+      setForecast(daily);
+    }
   };
   useEffect(() => {
     getData();
-  }, []);
-  867777000;
+  }, [selectedtrailDetails]);
 
   return (
     <>
