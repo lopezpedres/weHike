@@ -1,17 +1,22 @@
+import { Point, Position } from "geojson";
+
 type TActionOptions =
   | "CHANGE-EMAIL"
   | "CHANGE-PASSWORD"
   | "SET-USER-DATA"
   | "SET-USER-CURRENT-LOCATION"
-  | "SET-SELECTED-TRAIL";
+  | "SET-SELECTED-TRAIL-NAME"
+  | "SET-SELECTED-TRAIL-CENTER";
 
 export type State = {
-  user: {
-    password: string;
-    email: string;
-  };
   userCurrentLocation?: GeolocationPosition;
-  selectedTrailName?: string;
+  selectedtrailDetails: {
+    trailName: string;
+    trailCenter?: Position;
+    elevationGain?: number;
+    distance?: number;
+    elevationMax?: number;
+  };
 };
 
 interface Action {

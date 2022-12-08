@@ -7,9 +7,10 @@ import Map, {
   Source,
   GeolocateControl,
   FullscreenControl,
+  GeolocateControlRef,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useContext, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import skyLayer from "../../Layers/skyLayer";
 import routeLayer from "../../Layers/routeLayer";
 import getPointToPointRoute from "../../Sources/getPointToPointRoute";
@@ -31,7 +32,7 @@ interface bboxInterface {
 }
 const start: Position = [-123.01484612998101, 49.95358547262097];
 const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
-const MyMap = () => {
+const NavigateMap = () => {
   // const { userCurrentLocation } = useContext(userContentState);
   // const coordinates = userCurrentLocation?.coords;
   // let lat = coordinates?.latitude;
@@ -80,6 +81,11 @@ const MyMap = () => {
     //   setGeojsonRouteSource(poitToPointGeojsonRoute);
     // }
   };
+  const geolocateControlRef = useCallback((ref: GeolocateControlRef | null) => {
+    if (ref) {
+      ref.trigger();
+    }
+  }, []);
   return (
     <div className="fixed">
       <Map
@@ -111,7 +117,7 @@ const MyMap = () => {
           <Layer {...startPointLayer} />
         </Source>
         <NavigationControl />
-        <GeolocateControl />
+        <GeolocateControl ref={geolocateControlRef} />
         {displayBbox && (
           <BoundingBox setCurrentBbox={setCurrentBbox} mapRef={mapRef} />
         )}
@@ -129,4 +135,4 @@ const MyMap = () => {
   );
 };
 
-export default MyMap;
+export default NavigateMap;

@@ -1,46 +1,37 @@
-import React, { useContext, useEffect, useRef } from "react";
+import { Point, Position } from "geojson";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Map, {
   GeolocateControl,
   GeolocateControlRef,
   MapRef,
 } from "react-map-gl";
 import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
-
+interface InterfaceLatLng {
+  lat: number;
+  lng: number;
+}
+const lat = 49.246292;
+const lng = -123.116226;
 const GlobalMap = () => {
-  const lat = 49.246292;
-  const lng = -123.116226;
+  const [latLng, setLatLng] = useState<InterfaceLatLng>();
+  const dispatch = useContext(userContentDispatch);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      console.log("Recived location at GlobalMap", pos);
+      setLatLng({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      dispatch({ type: "SET-USER-CURRENT-LOCATION", payload: pos });
+    });
+  }, []);
   const defaultViewState = {
-    latitude: lat,
-    longitude: lng,
+    latitude: 49.668131,
+    longitude: -123.162498,
     //Zoom here is super important, otherwise, I wont be able to get my trails
     //12 seems to be ideal
     zoom: 12,
   };
   const globalMapRef = useRef<MapRef | null>(null);
-  const dispatch = useContext(userContentDispatch);
   const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
-  //   useEffect(() => {
-  //     if (globalGeoControlRef) {
-  //       const geoLocation = globalGeoControlRef.current?.trigger();
-  //       if (geoLocation) {
-  //         navigator.geolocation.getCurrentPosition((pos) => {
-  //           console.log("Recived location at GlobalMap");
-  //           dispatch({ type: "SET-USER-CURRENT-LOCATION", payload: pos });
-  //         });
-  //       }
-  //     }
-  //   }, [globalMapRef]);
-  const geolocateControlRef = React.useCallback(
-    (ref: GeolocateControlRef | null) => {
-      if (ref) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-          console.log("Recived location at GlobalMap", pos);
-          dispatch({ type: "SET-USER-CURRENT-LOCATION", payload: pos });
-        });
-      }
-    },
-    []
-  );
+
   return (
     <Map
       {...defaultViewState}
@@ -50,7 +41,7 @@ const GlobalMap = () => {
       mapboxAccessToken={MAP_BOX_TOKEN}
       // style={{ width: "100vw", height: "95vh" }}
     >
-      <GeolocateControl ref={geolocateControlRef} />
+      {/* <GeolocateControl ref={(ev)=> ev?.trigger()} /> */}
     </Map>
   );
 };

@@ -1,4 +1,4 @@
-import MyMap from "./components/Map/MyMap";
+import MyMap from "./components/NavigateMap/NavigateMap";
 import ImageForm from "./components/ImageForm/ImageForm";
 import UserContentProvider from "./context/UserContentProvider/UserContentProvider";
 import LogIn from "./pages/auth/LogIn";

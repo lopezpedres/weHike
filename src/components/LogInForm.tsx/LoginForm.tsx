@@ -1,8 +1,8 @@
 import React from "react";
-import googleLogo from "../../assets/logos/google_logo.png";
-import facebookLogo from "../../assets/logos/facebook_logo.png";
-import github from "../../assets/logos/github_logo.png";
-import mtn from "../../assets/images/mtn.jpg";
+import googleLogo from "/assets/logos/google_logo.png";
+import facebookLogo from "/assets/logos/facebook_logo.png";
+import github from "/assets/logos/github_logo.png";
+import mtn from "/assets/images/mtn.jpg";
 
 interface Props {
   logInWithGoogle: () => void;
