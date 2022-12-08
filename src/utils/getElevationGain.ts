@@ -1,21 +1,23 @@
 import { FeatureCollection } from "geojson";
 import { useContext } from "react";
 import { MapboxGeoJSONFeature, MapRef, LngLatLike } from "react-map-gl";
+import getActualElevationGain from "./getActualElevationGain";
 
 const getElevationGain = (
-  geometriesOfSingleTrail: FeatureCollection[],
+  geometriesOfSingleTrail: MapboxGeoJSONFeature,
   globalMap: MapRef
 ) => {
-  const elevationInMeters = geometriesOfSingleTrail.map(({ features }) => {
-    const { geometry } = features[0];
-    if (geometry.type === "LineString") {
-      const elevationArray = geometry.coordinates.map((coor) => {
+  if (geometriesOfSingleTrail.geometry.type === "LineString") {
+    const elevationArray = geometriesOfSingleTrail.geometry.coordinates.map(
+      (coor) => {
         const elevation = globalMap.queryTerrainElevation(coor as LngLatLike);
         return elevation;
-      });
-      return elevationArray;
-    }
-  });
-  return elevationInMeters;
+      }
+    );
+    const actualElvGainTotal = Math.floor(
+      getActualElevationGain(elevationArray)
+    );
+    return actualElvGainTotal;
+  }
 };
 export default getElevationGain;

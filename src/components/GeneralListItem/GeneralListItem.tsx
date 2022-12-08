@@ -8,9 +8,16 @@ interface Props {
   name?: string;
   geometry?: Position;
   sac_scale?: string | null;
+  elevation_gain?: number;
 }
 
-const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
+const GeneralListItem = ({
+  id,
+  name,
+  geometry,
+  sac_scale = null,
+  elevation_gain,
+}: Props) => {
   // const randomTrailCenter: Position | false =
   //   geometry?.type === "LineString" && geometry.coordinates[0];
   const navigate = useNavigate();
@@ -48,7 +55,9 @@ const GeneralListItem = ({ id, name, geometry, sac_scale = null }: Props) => {
             <li className="flex justify-between items-end">
               <div>
                 <span className="block text-xs">ELEVATION GAIN</span>
-                <span className="text-4xl font-semibold">2768 m </span>
+                <span className="text-4xl font-semibold">
+                  {elevation_gain}m{" "}
+                </span>
               </div>
               <div>
                 <button className=" text-xs rounded-2xl border-2 border-primary bg-white right-0 py-2 px-4">
