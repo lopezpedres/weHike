@@ -8,7 +8,8 @@ module.exports = {
         sans: ['NotoSans', 'sans-serif', ...fontFamily.sans,]
       },
       backgroundImage: {
-        'hero-login': "url('./assets/images/mtn.jpg')"
+        'hero-login': "url('./assets/images/mtn.jpg')",
+        'signUp': "url('/assets/videos/signup.mp4')"
       }
     },
     colors: {

@@ -1,9 +1,7 @@
 import App2 from "./App2";
 import { Routes, Route, Navigate } from "react-router-dom";
-import LogIn from "./pages/auth/LogIn";
+import LogIn from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
-import MyMap from "./components/NavigateMap/NavigateMap";
-import { MapProvider } from "react-map-gl";
 import MapNavigate from "./pages/MapNavigate/MapNavigate";
 import GlobalMap from "./components/GlobalMap/GlobalMap";
 import UserContentProvider from "./context/UserContentProvider/UserContentProvider";
@@ -12,15 +10,26 @@ import { auth } from "./firebase/firebaseConfig";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import MyTrails from "./components/MyTrails/MyTrails";
 import Profile from "./pages/Profile/Profile";
+import SignUp from "./pages/SignUp/SignUp";
+import { useAuth } from "./context/UserAuthProvider/UserAuthProvider";
 
 const App = () => {
-  const { currentUser } = auth;
-  console.log(currentUser);
+  const { currentUser } = useAuth();
   return (
     <UserContentProvider>
       <GlobalMap />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={
+            currentUser ? (
+              <Navigate to={"trails"} />
+            ) : (
+              <Navigate to={"signup"} />
+            )
+          }
+        />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="trails">
           <Route index element={<Home />} />
           <Route path=":trailsName" element={<TrailDetailsPage />} />
