@@ -2,19 +2,7 @@ import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import search from "/assets/icons/search.svg";
 import GeneralList from "../../components/GeneralList/GeneralList";
-import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebase/firebaseConfig";
 const Home = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        navigate("/");
-      }
-    });
-    return unsub();
-  }, []);
   return (
     <>
       <main className="bg-white">

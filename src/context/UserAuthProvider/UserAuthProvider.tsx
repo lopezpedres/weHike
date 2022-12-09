@@ -1,7 +1,9 @@
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithRedirect,
   updateCurrentUser,
   User,
 } from "firebase/auth";
@@ -27,6 +29,10 @@ const signUp = (email: string, password: string) => {
 const login = (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password);
 };
+const logInWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+  return signInWithRedirect(auth, provider);
+};
 
 const UserAuthProvider = ({ children }: Props) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -42,5 +48,5 @@ const UserAuthProvider = ({ children }: Props) => {
     </AuthContext.Provider>
   );
 };
-export { useAuth, signUp, login };
+export { useAuth, signUp, login, logInWithGoogle };
 export default UserAuthProvider;
