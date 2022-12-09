@@ -35,11 +35,11 @@ const createNewUser = async () => {
         name: auth.currentUser?.displayName,
         updatedAt: serverTimestamp(),
       };
-      const result = await setDoc(userMetaRef, newUser);
-      return result;
+      await setDoc(userMetaRef, newUser);
+      return true;
     } else {
       console.log("User exists already");
-      return null;
+      return false;
     }
   } catch (err) {
     console.log(err);

@@ -34,7 +34,7 @@ const Navbar = ({ activeNavbar = true }: Props) => {
                 <span className="mt-2 text-sm">Saved</span>
               </li>
             </Link>
-            <Link to={"/login"}>
+            <Link to={"/profile"}>
               <li className="flex flex-col items-center">
                 <img className="w-8 pt-2" src={profile} />
                 <span className="mt-2 text-sm">Profile</span>
