@@ -5,10 +5,8 @@ import {
   signInWithEmailAndPassword,
   signInWithRedirect,
   signOut,
-  updateCurrentUser,
   User,
 } from "firebase/auth";
-import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import React, { useContext, createContext, useEffect, useState } from "react";
 import { auth, db } from "../../firebase/firebaseConfig";
 
