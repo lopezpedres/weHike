@@ -1,7 +1,6 @@
 import MyMap from "./components/NavigateMap/NavigateMap";
 import ImageForm from "./components/ImageForm/ImageForm";
 import UserContentProvider from "./context/UserContentProvider/UserContentProvider";
-import LogIn from "./pages/auth/LogIn";
 import { addDoc, collection, GeoPoint } from "firebase/firestore";
 import { db, auth } from "./firebase/firebaseConfig";
 import createNewUser, {
@@ -16,7 +15,6 @@ function App() {
   const start_trail = new GeoPoint(49, -120);
   return (
     <UserContentProvider>
-      <LogIn />
       {/* <MyMap /> */}
       <div>
         <button onClick={() => createNewUser()}>createNewUser</button>
