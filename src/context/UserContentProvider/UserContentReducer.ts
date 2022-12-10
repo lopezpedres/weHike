@@ -22,6 +22,16 @@ const ModuleReducer = (state: State, action: Action): State => {
           trailCenter: action.payload,
         },
       };
+    case "SET-MY-TRAILS":
+      return {
+        ...state,
+        userTrails: action.payload,
+      };
+    case "SET-USER-META":
+      return {
+        ...state,
+        userMeta: action.payload,
+      };
     default:
       return state;
   }

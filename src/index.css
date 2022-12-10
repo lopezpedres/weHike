@@ -2,9 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-    overflow: hidden;
+/* .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body {
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+
 } */
+
 @layer base {
     @font-face {
         font-family: NotoSans;

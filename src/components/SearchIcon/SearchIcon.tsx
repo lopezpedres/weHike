@@ -2,13 +2,12 @@ import { useLocation } from "react-router-dom";
 
 export const SearchIcon = () => {
   const { pathname } = useLocation();
-  console.log(pathname);
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth="1.5"
+      strokeWidth={pathname === "/trails" ? 3 : 1.5}
       stroke={pathname === "/trails" ? "#fabc3c" : "currentColor"}
       className="w-full h-full"
     >

@@ -23,7 +23,8 @@ const WeatherList = () => {
   return (
     <>
       {forecast ? (
-        <div className=" w-full flex overflow-x-auto">
+        // !Need to add arrows to show that there are more info to show
+        <div className="scrollbar-hide w-full flex overflow-x-auto">
           {forecast.map((daily) => (
             <WeatherCard
               key={daily.dt}

@@ -1,9 +1,8 @@
-import profile from "/assets/icons/profile.svg";
-import bookmark from "/assets/icons/bookmark.svg";
-import search from "/assets/icons/search.svg";
-import mapPin from "/assets/icons/map-pin.svg";
 import { Link } from "react-router-dom";
 import { SearchIcon } from "../SearchIcon/SearchIcon";
+import SaveIcon from "../SaveIcon/SaveIcon";
+import { NavigateIcon } from "../NavigateIcon/NavigateIcon";
+import ProfileIcon from "../ProfileIcon/ProfileIcon";
 
 interface Props {
   activeNavbar?: boolean;
@@ -24,19 +23,25 @@ const Navbar = ({ activeNavbar = true }: Props) => {
             </Link>
             <Link to={"/navigate"}>
               <li className="flex flex-col items-center">
-                <img className="w-8 pt-2" src={mapPin} />
+                <div className="w-8 pt-2">
+                  <NavigateIcon />
+                </div>
                 <span className="mt-2 text-sm">Navigate</span>
               </li>
             </Link>
-            <Link to={"/"}>
+            <Link to={"/my-trails"}>
               <li className="flex flex-col items-center">
-                <img className="w-8 pt-2" src={bookmark} />
+                <div className="w-8 pt-2">
+                  <SaveIcon />
+                </div>
                 <span className="mt-2 text-sm">Saved</span>
               </li>
             </Link>
             <Link to={"/profile"}>
               <li className="flex flex-col items-center">
-                <img className="w-8 pt-2" src={profile} />
+                <div className="w-8 pt-2">
+                  <ProfileIcon />
+                </div>
                 <span className="mt-2 text-sm">Profile</span>
               </li>
             </Link>
