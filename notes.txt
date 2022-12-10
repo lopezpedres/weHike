@@ -53,3 +53,58 @@ THIS IS THE REAL ONE!!!!
 
 -This is the query :
 [out:json][timeout:25];(way["highway"="path"]["name"]({south},{west},{north},{east}););out tags;
+
+Data structure ish
+//User Content for global State
+{
+  //From Firebase
+  userMeta:{
+    user_uid:"string"
+    createdAt:"TimeStamp",
+    updatedAt = "TimeStamp"
+    email:"string",
+    user_name = "string"
+  },
+  userTrails:[
+   {trail_id:"string"
+    trail_name:"string"
+    //default for tags is an empty string
+    //need to define types for the possible options of tags
+    tags:["string"]  }
+    
+  ];
+  customeTrails:[
+    createdAt,
+    updatedAt
+    trail_name:"string",
+    trail_id:"string",
+    trail_start:[["number"],["number"]]
+    trail_end:[["number"],["number"]]
+    ]
+  notesTrail:[
+    {
+    createdAt,
+    updatedAt,
+    noteId
+    user_id
+    trail_id
+    note_content
+    note_title
+    note_point
+      
+    }
+    ]
+    imagesTrail:[
+    {
+    createdAt,
+    updatedAt,
+    imageId
+    user_id
+    trail_id
+    image_url
+    image_description
+    image_point
+    }
+    ]
+    
+}

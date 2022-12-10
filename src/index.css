@@ -1,5 +1,35 @@
-html, body {
-  margin: 0 0;
-  padding: 0;
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body {
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+
+} */
+
+@layer base {
+    @font-face {
+        font-family: NotoSans;
+        fontWheight: '400';
+        src: url('./assets/fonts/NotoSans-Regular.ttf');
+    }
+
+    @font-face {
+        font-family: 'NotoSans';
+        fontWheight: '600';
+        src: url("./assets/fonts/NotoSans-SemiBold.ttf") format('ttf');
+    }
 }
