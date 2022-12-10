@@ -2,7 +2,7 @@ import { Geometry, Point, Position } from "geojson";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
-
+import { addUserTrail } from "../../firebase/firebaseQueries/firebaseQueries";
 interface Props {
   id?: string;
   name?: string;
@@ -42,6 +42,28 @@ const GeneralListItem = ({
       });
     }
   };
+  //!This object should have the ids of all the trails with the same name
+  //!for now, I will only save the name of the trail, cause it;s all I need to
+  //!render the trails of my map
+  const addTrailHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    console.log("click");
+    if (name && id) {
+      try {
+        await addUserTrail({
+          trail_id: id,
+          trail_name: name,
+          tags: {
+            planning: true,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   return (
     <>
@@ -60,7 +82,10 @@ const GeneralListItem = ({
                 </span>
               </div>
               <div>
-                <button className=" text-xs rounded-2xl border-2 border-primary bg-white right-0 py-2 px-4">
+                <button
+                  onClick={(e) => addTrailHandler(e)}
+                  className=" text-xs rounded-2xl border-2 border-primary bg-white right-0 py-2 px-4"
+                >
                   SAVE
                 </button>
               </div>

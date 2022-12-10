@@ -8,6 +8,18 @@ import { collection, where, query, onSnapshot, doc } from "firebase/firestore";
 interface LayoutProps {
   children: React.ReactNode;
 }
+export interface userMeta {
+  updatedAt: CreatedAtOrUpdatedAt;
+  createdAt: CreatedAtOrUpdatedAt;
+  email: string;
+  name: string;
+  avatar_url: string;
+}
+export interface CreatedAtOrUpdatedAt {
+  seconds: number;
+  nanoseconds: number;
+}
+
 const defaultState: State = {} as State;
 const userContentState = createContext(defaultState);
 const userContentDispatch = createContext((() => {}) as Dispatch<Action>);
@@ -18,20 +30,20 @@ const UserContentProvider = ({ children }: LayoutProps) => {
       const userContentRef = doc(db, "user-meta", `${user?.uid}`);
       const userTrailsRef = doc(db, "user-trails", `${user?.uid}`);
       if (user) {
-        //Get User-Meta
         onSnapshot(userContentRef, (querySnapshot) => {
           const userMeta = querySnapshot.data();
-
+          dispatch({ type: "SET-USER-META", payload: userMeta as userMeta });
           console.log(userMeta);
         });
         //Get User-Trails
         onSnapshot(userTrailsRef, (querySnapshot) => {
           const userTrails = querySnapshot.data();
+          dispatch({ type: "SET-MY-TRAILS", payload: userTrails });
           console.log(userTrails);
         });
       }
     });
-    return () => onAuthChange();
+    return onAuthChange;
   }, []);
 
   return (

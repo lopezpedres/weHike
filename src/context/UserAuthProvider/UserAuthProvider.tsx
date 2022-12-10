@@ -4,11 +4,13 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithRedirect,
+  signOut,
   updateCurrentUser,
   User,
 } from "firebase/auth";
+import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import React, { useContext, createContext, useEffect, useState } from "react";
-import { auth } from "../../firebase/firebaseConfig";
+import { auth, db } from "../../firebase/firebaseConfig";
 
 interface InterfaceAuth {
   currentUser: User | null;
@@ -29,6 +31,9 @@ const signUp = (email: string, password: string) => {
 const login = (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password);
 };
+const logout = async () => {
+  const isOut = await signOut(auth);
+};
 const logInWithGoogle = () => {
   const provider = new GoogleAuthProvider();
   return signInWithRedirect(auth, provider);
@@ -38,7 +43,11 @@ const UserAuthProvider = ({ children }: Props) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   useEffect(() => {
     const unsubs = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
     });
     return unsubs;
   }, []);
@@ -48,5 +57,5 @@ const UserAuthProvider = ({ children }: Props) => {
     </AuthContext.Provider>
   );
 };
-export { useAuth, signUp, login, logInWithGoogle };
+export { useAuth, signUp, login, logInWithGoogle, logout };
 export default UserAuthProvider;

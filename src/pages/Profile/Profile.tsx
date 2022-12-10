@@ -3,20 +3,27 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { useAuth } from "../../context/UserAuthProvider/UserAuthProvider";
 import { auth } from "../../firebase/firebaseConfig";
+import { logout } from "../../context/UserAuthProvider/UserAuthProvider";
 
 const Profile = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const logOutHanlder = () => {
-    signOut(auth);
-    navigate("/login");
+    logout();
+    setTimeout(() => {
+      navigate("/login");
+    }, 1);
   };
   return (
     <>
       {currentUser ? (
         <>
           <button onClick={() => logOutHanlder()}>LogOut</button>
-          <p>{currentUser.displayName}</p>
+          <p>
+            {currentUser.displayName
+              ? currentUser.displayName
+              : currentUser.email}
+          </p>
           <section className="relative">
             <div className=" rounded-b-[4rem] xl h-72 bg-primary shadow-md">
               <h1 className="text-3xl font-semibold text-center p-4">

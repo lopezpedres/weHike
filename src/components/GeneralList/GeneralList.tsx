@@ -72,16 +72,11 @@ const GeneralList = () => {
   };
   useEffect(() => {
     //This is a bit complex:
-
     if (globalMap?.loaded()) {
-      console.log("The map is loaded");
       return afterChangeComplete();
     } else {
-      console.log("The map is not loading", globalMap);
       globalMap?.on("load", () => {
-        console.log("loading map");
         if (!globalMap?.loaded()) {
-          console.log("The map is not loaded");
           return;
         }
         globalMap.on("render", afterChangeComplete);
@@ -90,7 +85,7 @@ const GeneralList = () => {
   }, [globalMap, userCurrentLocation]);
   return (
     <ul className="w-full mt-2 mb-40">
-      {features &&
+      {features ? (
         features.map((item) => (
           <GeneralListItem
             key={item?.id}
@@ -100,7 +95,10 @@ const GeneralList = () => {
             sac_scale={item?.sac_scale}
             elevation_gain={item?.elevation_gain}
           />
-        ))}
+        ))
+      ) : (
+        <h1>Loading...</h1>
+      )}
     </ul>
   );
 };
