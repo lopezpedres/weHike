@@ -14,7 +14,21 @@ module.exports = {
     },
     colors: {
       primary: '#fabc3c',
-      white: '#fffcff'
+      white: '#fffcff',
+      tag: {
+        light: {
+          green: "#dcfce7",
+          yellow: "#fef9c3",
+          blue: "#cffafe",
+          orange: "#ffedd5"
+        },
+        dark: {
+          green: "#16a34a",
+          yellow: "#ca8a04",
+          blue: "#0891b2",
+          orange: "#ea580c"
+        }
+      }
     }
   },
   plugins: [],
