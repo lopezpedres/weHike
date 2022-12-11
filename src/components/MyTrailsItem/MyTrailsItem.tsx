@@ -1,8 +1,12 @@
-import React from "react";
 import { TrailAtt } from "../../context/UserContentProvider/UserContentTypes";
+import DeleteIcon from "../DeleteIcon/DeleteIcon";
 import Tag from "../Tag/Tag";
+import { deleteSingleTrail } from "../../firebase/firebaseQueries/firebaseQueries";
 
 const MyTrailsItem = ({ value }: { value: TrailAtt }) => {
+  const deleteHandler = async () => {
+    await deleteSingleTrail(value.trail_id);
+  };
   return (
     <li className="mx-8 my-4 ">
       <ul className="mx-auto border-primary  w-full p-6 shadow-md rounded-lg   ">
@@ -17,15 +21,13 @@ const MyTrailsItem = ({ value }: { value: TrailAtt }) => {
             )}
           </>
         </li>
-        <li className="flex justify-between items-end">
+        <li className="flex justify-between items-center">
           <div>
             <span className="block text-xs">ELEVATION GAIN</span>
             <span className="text-4xl font-semibold">11111m </span>
           </div>
-          <div>
-            <button className=" text-xs rounded-2xl border-2 border-primary bg-white right-0 py-2 px-4">
-              SAVE
-            </button>
+          <div onClick={() => deleteHandler()} className="w-6 self-end">
+            <DeleteIcon />
           </div>
         </li>
       </ul>

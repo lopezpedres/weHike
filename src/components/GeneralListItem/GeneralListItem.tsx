@@ -49,11 +49,11 @@ const GeneralListItem = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    console.log("click");
-    if (name && id) {
+    const splitedId = id?.split("/")[1];
+    if (name && splitedId) {
       try {
         await addUserTrail({
-          trail_id: id,
+          trail_id: splitedId,
           trail_name: name,
           tags: {
             planning: true,
