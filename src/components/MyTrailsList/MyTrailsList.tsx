@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { userContentState } from "../../context/UserContentProvider/UserContentProvider";
-import { Trail } from "../../context/UserContentProvider/UserContentTypes";
+import type { Trail } from "../../context/UserContentProvider/UserContentTypes";
 import MyTrailsItem from "../MyTrailsItem/MyTrailsItem";
 interface Props {
   userTrails: Trail | null;

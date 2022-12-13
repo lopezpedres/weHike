@@ -7,13 +7,15 @@ type TActionOptions =
   | "SET-SELECTED-TRAIL-NAME"
   | "SET-SELECTED-TRAIL-CENTER"
   | "SET-MY-TRAILS"
-  | "SET-USER-META";
+  | "SET-USER-META"
+  | "SET-SELECTED-MY-TRAIL-NAME";
 
 export type State = {
   userCurrentLocation?: GeolocationPosition;
   selectedtrailDetails: SelectedtrailDetails;
   userTrails: Trail | null;
   userMeta: userMeta;
+  selectedMyTrailName?: string;
 };
 
 interface Action {
@@ -36,6 +38,10 @@ export interface TrailAtt {
   notes_id: string;
   images_id: string;
   custom_id?: string | null;
+  distance: number;
+  max_elevation: number;
+  elevation_gain?: number;
+  trail_center: number[];
   tags: Tags;
   createdAt: CreatedAtOrUpdatedAt;
   trail_name: string;

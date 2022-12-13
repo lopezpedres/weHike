@@ -32,6 +32,11 @@ const ModuleReducer = (state: State, action: Action): State => {
         ...state,
         userMeta: action.payload,
       };
+    case "SET-SELECTED-MY-TRAIL-NAME":
+      return {
+        ...state,
+        selectedMyTrailName: action.payload,
+      };
     default:
       return state;
   }
