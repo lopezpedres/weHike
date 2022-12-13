@@ -49,19 +49,24 @@ const GeneralList = () => {
         //This is the only typing that I can't figure  out
         // @ts-ignore: Unreachable code error
         const featureCenter = center(featuresCollectionTurf);
-
+        //todo:Need to get themaxelevation of the trail
+        const maxElevation = 4444;
+        //todo:Need to get the distance of the trail
+        const trailDistance = 4444;
         const elevationFeaturesByName =
           featuresNameGroup.length === 1
             ? getElevationGain(featuresNameGroup[0], globalMap)
-            : ["Not available"];
+            : "Not available";
         const { properties } = feature;
         if (properties) {
           const featureObj: InterfacePropertiesFeature = {
             id: properties["@id"],
             name: properties.name,
-            geometry: featureCenter.geometry.coordinates,
+            trail_center: featureCenter.geometry.coordinates,
             sac_scale: properties.sac_scale,
             elevation_gain: elevationFeaturesByName as number,
+            max_elevation: maxElevation,
+            distance: trailDistance,
           };
           return featureObj;
         }
@@ -89,11 +94,13 @@ const GeneralList = () => {
         features.map((item) => (
           <GeneralListItem
             key={item?.id}
-            geometry={item?.geometry}
+            trail_center={item?.trail_center}
             id={item?.id}
             name={item?.name}
             sac_scale={item?.sac_scale}
             elevation_gain={item?.elevation_gain}
+            max_elevation={item?.max_elevation}
+            distance={item?.distance}
           />
         ))
       ) : (

@@ -1,13 +1,15 @@
+import { Position } from "@turf/helpers";
 import React, { useContext, useEffect, useState } from "react";
 import { userContentState } from "../../context/UserContentProvider/UserContentProvider";
 import getWeatherData from "../../utils/getWeatherData";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import { DailyEntity, Weather } from "./typesWeatherList";
-
-const WeatherList = () => {
+interface Props {
+  trailCenter: Position | undefined;
+}
+const WeatherList = ({ trailCenter }: Props) => {
   const [forecast, setForecast] = useState<DailyEntity[] | null | undefined>();
   const { selectedtrailDetails } = useContext(userContentState);
-  const { trailCenter } = selectedtrailDetails;
 
   //Getting data from API
   const getData = async () => {

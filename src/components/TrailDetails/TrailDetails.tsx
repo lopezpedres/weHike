@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { SelectedtrailDetails } from "../../context/UserContentProvider/UserContentTypes";
 import WeatherList from "../WeatherList/WeatherList";
 import chevronLeft from "/assets/icons/chevron-left.svg";
 
 interface Props {
-  trailName: string;
+  selectedtrailDetails: SelectedtrailDetails;
   setShowMap: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const TrailDetails = ({ trailName, setShowMap }: Props) => {
+export const TrailDetails = ({ selectedtrailDetails, setShowMap }: Props) => {
+  const { trailName, distance, elevationGain, elevationMax, trailCenter } =
+    selectedtrailDetails;
+
   const navigate = useNavigate();
   const clickHandler = () => {
     navigate(-1);
@@ -48,7 +52,7 @@ export const TrailDetails = ({ trailName, setShowMap }: Props) => {
             <h5 className="text-xl font-semibold">Open in Map</h5>
           </div>
         </article>
-        <WeatherList />
+        <WeatherList trailCenter={trailCenter} />
       </section>
     </>
   );

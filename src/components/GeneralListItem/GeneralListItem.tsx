@@ -1,44 +1,41 @@
+import { GeoPoint } from "firebase/firestore";
 import { Geometry, Point, Position } from "geojson";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
 import { addUserTrail } from "../../firebase/firebaseQueries/firebaseQueries";
+import toSlug from "../../utils/toSlug";
 interface Props {
   id?: string;
   name?: string;
-  geometry?: Position;
+  trail_center?: Position;
   sac_scale?: string | null;
   elevation_gain?: number;
+  max_elevation?: number;
+  distance?: number;
 }
 
 const GeneralListItem = ({
   id,
   name,
-  geometry,
+  trail_center,
   sac_scale = null,
   elevation_gain,
+  max_elevation,
+  distance,
 }: Props) => {
   // const randomTrailCenter: Position | false =
   //   geometry?.type === "LineString" && geometry.coordinates[0];
   const navigate = useNavigate();
   const dispatch = useContext(userContentDispatch);
-  const toSlug = (name: string | undefined) => {
-    return (
-      name &&
-      name
-        .toLocaleLowerCase()
-        .replace(/ /g, "-")
-        .replace(/[^\w-]+/g, "")
-        .trim()
-    );
-  };
+
   const clickHandler = (name: string) => {
     navigate(`/trails/${toSlug(name)}`);
     dispatch({ type: "SET-SELECTED-TRAIL-NAME", payload: name });
-    if (geometry) {
+    if (trail_center) {
       dispatch({
         type: "SET-SELECTED-TRAIL-CENTER",
-        payload: geometry,
+        payload: trail_center,
       });
     }
   };
@@ -50,7 +47,8 @@ const GeneralListItem = ({
   ) => {
     e.stopPropagation();
     const splitedId = id?.split("/")[1];
-    if (name && splitedId) {
+    if (name && splitedId && trail_center) {
+      const centerGeoPoint = new GeoPoint(trail_center[1], trail_center[0]);
       try {
         await addUserTrail({
           trail_id: splitedId,
@@ -58,6 +56,11 @@ const GeneralListItem = ({
           tags: {
             planning: true,
           },
+          trail_center: centerGeoPoint,
+          sac_scale,
+          elevation_gain,
+          max_elevation,
+          distance,
         });
       } catch (err) {
         console.error(err);

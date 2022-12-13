@@ -2,14 +2,30 @@ import { TrailAtt } from "../../context/UserContentProvider/UserContentTypes";
 import DeleteIcon from "../DeleteIcon/DeleteIcon";
 import Tag from "../Tag/Tag";
 import { deleteSingleTrail } from "../../firebase/firebaseQueries/firebaseQueries";
+import { useNavigate } from "react-router-dom";
+import toSlug from "../../utils/toSlug";
+import { useContext } from "react";
+import { userContentDispatch } from "../../context/UserContentProvider/UserContentProvider";
 
 const MyTrailsItem = ({ value }: { value: TrailAtt }) => {
-  const deleteHandler = async () => {
+  const dispatch = useContext(userContentDispatch);
+  const navigate = useNavigate();
+  const deleteHandler = async (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     await deleteSingleTrail(value.trail_id);
+  };
+  const onClickHandler = () => {
+    dispatch({ type: "SET-SELECTED-MY-TRAIL-NAME", payload: value.trail_name });
+    navigate(`/my-trails/${toSlug(value.trail_name)}`);
   };
   return (
     <li className="mx-8 my-4 ">
-      <ul className="mx-auto border-primary  w-full p-6 shadow-md rounded-lg   ">
+      <ul
+        onClick={() => onClickHandler()}
+        className="mx-auto  w-full p-6 shadow-md rounded-lg   "
+      >
         <li className="pb-4">
           <>
             <h2 className="text-2xl truncate hover:text-clip">
@@ -26,7 +42,7 @@ const MyTrailsItem = ({ value }: { value: TrailAtt }) => {
             <span className="block text-xs">ELEVATION GAIN</span>
             <span className="text-4xl font-semibold">11111m </span>
           </div>
-          <div onClick={() => deleteHandler()} className="w-6 self-end">
+          <div onClick={(e) => deleteHandler(e)} className="w-6 self-end">
             <DeleteIcon />
           </div>
         </li>
