@@ -53,6 +53,22 @@ const ModuleReducer = (state: State, action: Action): State => {
           sac_scale: action.payload,
         },
       };
+    case "SET-SELECTED-TRAIL-MAX-ELEVATION":
+      return {
+        ...state,
+        selectedtrailDetails: {
+          ...state.selectedtrailDetails,
+          elevationMax: action.payload,
+        },
+      };
+    case "SET-SELECTED-TRAIL-DISTANCE":
+      return {
+        ...state,
+        selectedtrailDetails: {
+          ...state.selectedtrailDetails,
+          distance: action.payload,
+        },
+      };
     default:
       return state;
   }

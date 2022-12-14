@@ -10,7 +10,9 @@ type TActionOptions =
   | "SET-USER-META"
   | "SET-SELECTED-MY-TRAIL-NAME"
   | "SET-SELECTED-TRAIL-ID"
-  | "SET-SELECTED-TRAIL-SAC-SCALE";
+  | "SET-SELECTED-TRAIL-SAC-SCALE"
+  | "SET-SELECTED-TRAIL-MAX-ELEVATION"
+  | "SET-SELECTED-TRAIL-DISTANCE";
 
 export type State = {
   userCurrentLocation?: GeolocationPosition;
@@ -22,17 +24,17 @@ export type State = {
 
 interface Action {
   type: TActionOptions;
-  payload: Position | string | userMeta | DocumentData | undefined; //Need to know exactly the type of input I'm going to be accepting here
+  payload: Position | string | userMeta | DocumentData | undefined | number;
 }
 
 export interface SelectedtrailDetails {
-  trailId?: string;
+  trailId: string;
   trailName: string;
-  trailCenter?: Position;
-  elevationGain?: number;
-  distance?: number;
-  elevationMax?: number;
-  sac_scale?: string;
+  trailCenter: Position;
+  elevationGain: number;
+  distance: number;
+  elevationMax: number;
+  sac_scale: string;
 }
 
 export interface Trail {
