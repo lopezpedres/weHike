@@ -9,7 +9,7 @@ interface Props {
   id?: string;
   name?: string;
   trail_center?: Position;
-  sac_scale?: string | null;
+  sac_scale?: string;
   elevation_gain?: number;
   max_elevation?: number;
   distance?: number;
@@ -19,7 +19,7 @@ const GeneralListItem = ({
   id,
   name,
   trail_center,
-  sac_scale = null,
+  sac_scale,
   elevation_gain,
   max_elevation,
   distance,
@@ -32,6 +32,10 @@ const GeneralListItem = ({
   const clickHandler = (name: string) => {
     navigate(`/trails/${toSlug(name)}`);
     dispatch({ type: "SET-SELECTED-TRAIL-NAME", payload: name });
+    dispatch({ type: "SET-SELECTED-TRAIL-ID", payload: id });
+    if (sac_scale) {
+      dispatch({ type: "SET-SELECTED-TRAIL-SAC-SCALE", payload: sac_scale });
+    }
     if (trail_center) {
       dispatch({
         type: "SET-SELECTED-TRAIL-CENTER",
@@ -57,6 +61,7 @@ const GeneralListItem = ({
             planning: true,
           },
           trail_center: centerGeoPoint,
+          //I need to follow the pipeline of all this attributes
           sac_scale,
           elevation_gain,
           max_elevation,

@@ -8,7 +8,9 @@ type TActionOptions =
   | "SET-SELECTED-TRAIL-CENTER"
   | "SET-MY-TRAILS"
   | "SET-USER-META"
-  | "SET-SELECTED-MY-TRAIL-NAME";
+  | "SET-SELECTED-MY-TRAIL-NAME"
+  | "SET-SELECTED-TRAIL-ID"
+  | "SET-SELECTED-TRAIL-SAC-SCALE";
 
 export type State = {
   userCurrentLocation?: GeolocationPosition;
@@ -24,11 +26,13 @@ interface Action {
 }
 
 export interface SelectedtrailDetails {
+  trailId?: string;
   trailName: string;
   trailCenter?: Position;
   elevationGain?: number;
   distance?: number;
   elevationMax?: number;
+  sac_scale?: string;
 }
 
 export interface Trail {
