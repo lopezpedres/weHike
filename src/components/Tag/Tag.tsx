@@ -14,8 +14,10 @@ const Tag = ({ tagName }: { tagName: string }) => {
   // bg-[#ffedd5]
   // text-[#ea580c]
   return (
-    <div
-      className={`
+    <>
+      {tagName === "planning" && (
+        <div
+          className={`
       mr-2
       text-[0.6rem]
       inline-flex 
@@ -24,12 +26,68 @@ const Tag = ({ tagName }: { tagName: string }) => {
       uppercase 
       px-3 
       py-1 
-      bg-${conditionals()[0]}
-      text-${conditionals()[1]}
+      bg-tag-light-orange
+      text-tag-dark-orange
       rounded-full`}
-    >
-      {tagName}
-    </div>
+        >
+          {tagName}
+        </div>
+      )}
+      {tagName === "done" && (
+        <div
+          className={`
+      mr-2
+      text-[0.6rem]
+      inline-flex 
+      items-center 
+      leading-sm 
+      uppercase 
+      px-3 
+      py-1 
+      bg-tag-light-green
+      text-tag-dark-green
+      rounded-full`}
+        >
+          {tagName}
+        </div>
+      )}
+      {tagName === "custom" && (
+        <div
+          className={`
+      mr-2
+      text-[0.6rem]
+      inline-flex 
+      items-center 
+      leading-sm 
+      uppercase 
+      px-3 
+      py-1 
+      bg-tag-light-blue
+      text-tag-dark-blue
+      rounded-full`}
+        >
+          {tagName}
+        </div>
+      )}
+      {tagName === "fav" && (
+        <div
+          className={`
+      mr-2
+      text-[0.6rem]
+      inline-flex 
+      items-center 
+      leading-sm 
+      uppercase 
+      px-3 
+      py-1 
+      bg-tag-light-yellow
+      text-tag-dark-yellow
+      rounded-full`}
+        >
+          {tagName}
+        </div>
+      )}
+    </>
   );
 };
 
