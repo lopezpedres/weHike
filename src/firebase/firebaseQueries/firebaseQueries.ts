@@ -82,10 +82,10 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
     trail_center,
-    sac_scale,
-    elevation_gain,
-    max_elevation,
-    distance,
+    sac_scale: sac_scale ? sac_scale : "",
+    elevation_gain: elevation_gain ? elevation_gain : 0,
+    max_elevation: max_elevation ? max_elevation : 0,
+    distance: distance ? distance : 0,
   };
 
   const specificUserTrailsRef = doc(

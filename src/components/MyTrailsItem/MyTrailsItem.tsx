@@ -24,7 +24,7 @@ const MyTrailsItem = ({ value }: { value: TrailAtt }) => {
     <li className="mx-8 my-4 ">
       <ul
         onClick={() => onClickHandler()}
-        className="mx-auto  w-full p-6 shadow-md rounded-lg   "
+        className="mx-auto  w-full p-6 shadow-md rounded-lg flex justify-between items-center   "
       >
         <li className="pb-4">
           <>
@@ -37,12 +37,8 @@ const MyTrailsItem = ({ value }: { value: TrailAtt }) => {
             )}
           </>
         </li>
-        <li className="flex justify-between items-center">
-          <div>
-            <span className="block text-xs">ELEVATION GAIN</span>
-            <span className="text-4xl font-semibold">11111m </span>
-          </div>
-          <div onClick={(e) => deleteHandler(e)} className="w-6 self-end">
+        <li className="self-end">
+          <div onClick={(e) => deleteHandler(e)} className="w-6 ">
             <DeleteIcon />
           </div>
         </li>

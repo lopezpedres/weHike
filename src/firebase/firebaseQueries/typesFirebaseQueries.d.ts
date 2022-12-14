@@ -9,10 +9,10 @@ export default interface InterfaceNewTrailArg {
   custom_id?: string;
   tags?: InterfaceTags;
   trail_center?: GeoPoint;
-  sac_scale?;
-  elevation_gain?;
-  max_elevation?;
-  distance?;
+  sac_scale?: string;
+  elevation_gain?: number;
+  max_elevation?: number;
+  distance?: number;
 }
 interface InterfaceTags {
   fav?: boolean;

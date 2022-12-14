@@ -5,11 +5,11 @@ import GeneralListItem from "../GeneralListItem/GeneralListItem";
 import getUniqueFeatures from "../../utils/getUniqueFeatures";
 import { InterfacePropertiesFeature } from "./typesGeneralList";
 import getElevationGain from "../../utils/getElevationGain";
-import turfCombine from "@turf/combine";
+import length from "@turf/length";
 import center from "@turf/center";
-import { featureCollection } from "@turf/helpers";
-import { FeatureCollection, LineString, Position } from "geojson";
-import mergeStringlineGeometries from "../../utils/mergeLineStringArrays";
+import { AllGeoJSON, featureCollection } from "@turf/helpers";
+import getDifficulty from "../../utils/getDifficulty";
+import getMaxAltitude from "../../utils/getMaxAltitude";
 
 const GeneralList = () => {
   const { globalMap } = useMap();
@@ -43,30 +43,28 @@ const GeneralList = () => {
         const featuresNameGroup = uniqueFeatures.filter(
           (f) => f.properties?.name === feature.properties?.name
         );
+        console.log(featuresNameGroup);
 
         const featuresCollectionTurf = featureCollection(featuresNameGroup);
-
-        //This is the only typing that I can't figure  out
-        // @ts-ignore: Unreachable code error
-        const featureCenter = center(featuresCollectionTurf);
-        //todo:Need to get themaxelevation of the trail
-        const maxElevation = 4444;
-        //todo:Need to get the distance of the trail
-        const trailDistance = 4444;
+        const featureCenter = center(featuresCollectionTurf as AllGeoJSON);
+        const maxElevation = getMaxAltitude(featuresNameGroup, globalMap);
+        const trailDistance = length(featuresCollectionTurf, {
+          units: "kilometers",
+        });
         const elevationFeaturesByName =
           featuresNameGroup.length === 1
             ? getElevationGain(featuresNameGroup[0], globalMap)
-            : "Not available";
+            : 0;
         const { properties } = feature;
         if (properties) {
           const featureObj: InterfacePropertiesFeature = {
             id: properties["@id"],
             name: properties.name,
             trail_center: featureCenter.geometry.coordinates,
-            sac_scale: properties.sac_scale,
+            sac_scale: getDifficulty(properties.sac_scale),
             elevation_gain: elevationFeaturesByName as number,
             max_elevation: maxElevation,
-            distance: trailDistance,
+            distance: Math.round(trailDistance * 1000),
           };
           return featureObj;
         }

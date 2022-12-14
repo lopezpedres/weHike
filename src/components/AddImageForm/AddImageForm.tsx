@@ -38,8 +38,8 @@ const AddImageForm = ({
   const onImageSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (file) {
-      const urlImageUploaded = await postImageTrail(file);
       const imagePoint = await getImageLocation(file);
+      const urlImageUploaded = await postImageTrail(file);
       if (urlImageUploaded && imagePoint) {
         await addImageToTrail({
           image_description: "",
@@ -56,11 +56,11 @@ const AddImageForm = ({
     }
   };
   return (
-    <section className="absolute p-6 shadow-md max-w-xs w-10/12 text-xl font-semibold  bg-white rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
+    <section className="absolute flex flex-col p-6 shadow-md max-w-xs w-10/12 text-xl font-semibold  bg-white rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
       {showForm && (
         <form
           onSubmit={(e) => onImageSubmit(e)}
-          className=" flex flex-col items-center"
+          className=" flex flex-col items-center w-full"
         >
           <label className="">
             <div className=" flex flex-col items-center w-full border-dashed border-2 p-4 rounded-md">
@@ -85,13 +85,21 @@ const AddImageForm = ({
             />
           </label>
           {file && (
-            <button className=" bg-primary py-2 px-4 shadow-md  m-4 rounded-md">
+            <button className=" w-full bg-primary py-2 px-4 shadow-md  m-4 rounded-md">
               Add Image
             </button>
           )}
         </form>
       )}
       {success && <h1 className="text-center">Image Added!</h1>}
+      {!success && (
+        <button
+          className=" w-full self-center  bg-primary py-2 px-4 shadow-md  m-4 rounded-md"
+          onClick={() => SetDisplayAddImageSection(false)}
+        >
+          Cancel
+        </button>
+      )}
     </section>
   );
 };

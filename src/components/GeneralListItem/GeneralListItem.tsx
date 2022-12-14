@@ -9,7 +9,7 @@ interface Props {
   id?: string;
   name?: string;
   trail_center?: Position;
-  sac_scale?: string | null;
+  sac_scale?: string;
   elevation_gain?: number;
   max_elevation?: number;
   distance?: number;
@@ -19,7 +19,7 @@ const GeneralListItem = ({
   id,
   name,
   trail_center,
-  sac_scale = null,
+  sac_scale,
   elevation_gain,
   max_elevation,
   distance,
@@ -28,10 +28,25 @@ const GeneralListItem = ({
   //   geometry?.type === "LineString" && geometry.coordinates[0];
   const navigate = useNavigate();
   const dispatch = useContext(userContentDispatch);
-
   const clickHandler = (name: string) => {
     navigate(`/trails/${toSlug(name)}`);
     dispatch({ type: "SET-SELECTED-TRAIL-NAME", payload: name });
+    dispatch({ type: "SET-SELECTED-TRAIL-ID", payload: id });
+    if (sac_scale) {
+      dispatch({ type: "SET-SELECTED-TRAIL-SAC-SCALE", payload: sac_scale });
+    }
+    if (max_elevation) {
+      dispatch({
+        type: "SET-SELECTED-TRAIL-MAX-ELEVATION",
+        payload: max_elevation,
+      });
+    }
+    if (distance) {
+      dispatch({
+        type: "SET-SELECTED-TRAIL-DISTANCE",
+        payload: distance,
+      });
+    }
     if (trail_center) {
       dispatch({
         type: "SET-SELECTED-TRAIL-CENTER",
@@ -57,6 +72,7 @@ const GeneralListItem = ({
             planning: true,
           },
           trail_center: centerGeoPoint,
+          //I need to follow the pipeline of all this attributes
           sac_scale,
           elevation_gain,
           max_elevation,
@@ -75,22 +91,27 @@ const GeneralListItem = ({
           <ul className="mx-auto border-primary  w-full p-6 shadow-md rounded-lg   ">
             <li className="pb-4">
               <h2 className="text-2xl truncate hover:text-clip">{name}</h2>
-              <span className="text-[green]">easy</span>
+              <span className="text-[green]">{sac_scale}</span>
             </li>
             <li className="flex justify-between items-end">
               <div>
-                <span className="block text-xs">ELEVATION GAIN</span>
-                <span className="text-4xl font-semibold">
-                  {elevation_gain}m{" "}
-                </span>
+                <span className="block text-xs">LENGHT</span>
+                <span className="text-4xl font-semibold">{distance}m </span>
               </div>
               <div>
-                <button
+                {/* <button
                   onClick={(e) => addTrailHandler(e)}
                   className=" text-xs rounded-2xl border-2 border-primary bg-white right-0 py-2 px-4"
                 >
                   SAVE
-                </button>
+                </button> */}
+                <div>
+                  <span className="block text-xs">MAX ELEVATION</span>
+                  <span className="text-4xl font-semibold">
+                    {max_elevation}m{" "}
+                  </span>
+                </div>
+                <div></div>
               </div>
             </li>
           </ul>
