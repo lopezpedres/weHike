@@ -11,7 +11,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import { useAuth } from "./context/UserAuthProvider/UserAuthProvider";
 import PrivateRoutes from "./Routes/PrivateRoutes";
 import MyTrailsPage from "./pages/MyTrailsPage/MyTrailsPage";
-import MyTrailDetailsPage from "./components/MyTrailDetailsPage/MyTrailDetailsPage";
+import MyTrailDetailsPage from "./pages/MyTrailDetailsPage/MyTrailDetailsPage";
 
 const App = () => {
   const { currentUser } = useAuth();

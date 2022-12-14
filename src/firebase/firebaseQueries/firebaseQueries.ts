@@ -19,6 +19,13 @@ import InterfaceNewTrailArg, {
   InterfaceNewUserTrail,
   InterfaceNotesSingleTrail,
 } from "./typesFirebaseQueries";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  UploadMetadata,
+} from "firebase/storage";
 /**
  * Creates a new user in Firebase
  * @returns
@@ -50,7 +57,17 @@ const createNewUser = async () => {
  * @param newTrailArg
  */
 export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
-  const { trail_id, trail_name, tags, custom_id } = newTrailArg;
+  const {
+    trail_id,
+    trail_name,
+    tags,
+    custom_id,
+    trail_center,
+    sac_scale,
+    elevation_gain,
+    max_elevation,
+    distance,
+  } = newTrailArg;
   console.log(custom_id);
   const newTrailObject = {} as InterfaceNewUserTrail;
   const images_id = uuidv4();
@@ -64,6 +81,11 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
     notes_id,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
+    trail_center,
+    sac_scale: sac_scale ? sac_scale : "",
+    elevation_gain: elevation_gain ? elevation_gain : 0,
+    max_elevation: max_elevation ? max_elevation : 0,
+    distance: distance ? distance : 0,
   };
 
   const specificUserTrailsRef = doc(
@@ -210,5 +232,27 @@ export const addNoteToTrail = async (
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const postImageTrail = async (file: File) => {
+  const storage = getStorage();
+  const storageRef = ref(
+    storage,
+    `images/${auth.currentUser?.uid}` + file.name
+  );
+  if (file !== null || file !== undefined) {
+    try {
+      const snapshot = await uploadBytesResumable(
+        storageRef,
+        file,
+        file.type as UploadMetadata
+      );
+      console.log("An image has been uploaded" + snapshot.metadata);
+      const urlImage = getDownloadURL(snapshot.ref);
+      return urlImage;
+    } catch (e) {
+      console.log(e);
+    }
   }
 };

@@ -5,14 +5,16 @@ import TrailMap from "../../components/TrailMap/TrailMap";
 const TrailDetailsPage = () => {
   const [showMap, setShowMap] = useState(false);
   const { selectedtrailDetails } = useContext(userContentState);
-  const { trailName } = selectedtrailDetails;
 
   return (
     <main>
       {showMap ? (
         <TrailMap setShowMap={setShowMap} />
       ) : (
-        <TrailDetails setShowMap={setShowMap} trailName={trailName} />
+        <TrailDetails
+          setShowMap={setShowMap}
+          selectedtrailDetails={selectedtrailDetails}
+        />
       )}
     </main>
   );

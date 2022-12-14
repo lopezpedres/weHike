@@ -15,15 +15,15 @@ import { db, auth } from "../../firebase/firebaseConfig";
 
 const ImageForm = () => {
   const state = useContext(userContentState);
-  // const dispatch = useContext(userContentDispatch);
-  // const formHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   console.log(file);
-  //   if (file) {
-  //     const exifData = await exif.parse(file);
-  //     console.log("exifData", exifData);
-  //   }
-  // };
+  const dispatch = useContext(userContentDispatch);
+  const formHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    console.log(file);
+    if (file) {
+      const exifData = await exif.parse(file);
+      console.log("exifData", exifData);
+    }
+  };
 
   const addDocHandler = () => {
     const currentUser = auth.currentUser;

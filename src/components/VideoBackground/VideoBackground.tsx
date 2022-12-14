@@ -9,6 +9,7 @@ const VideoBackground = ({ children }: Props) => {
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.playbackRate = 0.5;
+      videoRef.current.autoplay = true;
     }
   }, []);
   return (

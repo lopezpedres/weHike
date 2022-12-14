@@ -1,4 +1,5 @@
 import { FieldValue, GeoPoint } from "firebase/firestore";
+import { Position } from "geojson";
 //? Should I start my randomId's with a the prefix of it;s object type?
 //?For example imageId: 21-32432-23432-234 (All image object will start with 21) and so on...
 //Add new trail
@@ -7,6 +8,11 @@ export default interface InterfaceNewTrailArg {
   trail_name: string;
   custom_id?: string;
   tags?: InterfaceTags;
+  trail_center?: GeoPoint;
+  sac_scale?: string;
+  elevation_gain?: number;
+  max_elevation?: number;
+  distance?: number;
 }
 interface InterfaceTags {
   fav?: boolean;
@@ -19,6 +25,11 @@ export interface InterfaceNewUserTrail {
     trail_id: string;
     trail_name: string;
     tags?: InterfaceTags;
+    trail_center?: GeoPoint;
+    sac_scale: string;
+    elevation_gain: number;
+    max_elevation: number;
+    distance: number;
     images_id: string;
     custom_id?: string | null;
     createdAt: FieldValue;
