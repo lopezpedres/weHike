@@ -28,7 +28,6 @@ const GeneralListItem = ({
   //   geometry?.type === "LineString" && geometry.coordinates[0];
   const navigate = useNavigate();
   const dispatch = useContext(userContentDispatch);
-
   const clickHandler = (name: string) => {
     navigate(`/trails/${toSlug(name)}`);
     dispatch({ type: "SET-SELECTED-TRAIL-NAME", payload: name });
@@ -80,14 +79,12 @@ const GeneralListItem = ({
           <ul className="mx-auto border-primary  w-full p-6 shadow-md rounded-lg   ">
             <li className="pb-4">
               <h2 className="text-2xl truncate hover:text-clip">{name}</h2>
-              <span className="text-[green]">easy</span>
+              <span className="text-[green]">{sac_scale}</span>
             </li>
             <li className="flex justify-between items-end">
               <div>
-                <span className="block text-xs">ELEVATION GAIN</span>
-                <span className="text-4xl font-semibold">
-                  {elevation_gain}m{" "}
-                </span>
+                <span className="block text-xs">LENGHT</span>
+                <span className="text-4xl font-semibold">{distance}m </span>
               </div>
               <div>
                 <button
