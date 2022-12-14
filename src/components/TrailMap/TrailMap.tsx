@@ -22,6 +22,7 @@ interface Props {
 const TrailMap = ({ setShowMap }: Props) => {
   const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
   const [displayOptions, setDisplayOptions] = useState(false);
+  const [success, setSucess] = useState(false);
 
   const { selectedtrailDetails } = useContext(userContentState);
   const { trailName, trailCenter, trailId, sac_scale } = selectedtrailDetails;
@@ -61,6 +62,9 @@ const TrailMap = ({ setShowMap }: Props) => {
           elevation_gain: 1,
           max_elevation: 1,
         });
+        setDisplayOptions(false);
+        setSucess(true);
+        setTimeout(() => setSucess(false), 2000);
       } catch (error) {}
     }
   };
@@ -107,6 +111,11 @@ const TrailMap = ({ setShowMap }: Props) => {
             >
               Save Trail
             </button>
+          </article>
+        )}
+        {success && (
+          <article className="absolute p-10 shadow-md max-w-xs w-10/12 text-xl font-semibold  bg-white rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
+            <h1 className="text-center">Trail Added!</h1>
           </article>
         )}
       </Map>

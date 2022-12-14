@@ -35,6 +35,18 @@ const GeneralListItem = ({
     if (sac_scale) {
       dispatch({ type: "SET-SELECTED-TRAIL-SAC-SCALE", payload: sac_scale });
     }
+    if (max_elevation) {
+      dispatch({
+        type: "SET-SELECTED-TRAIL-MAX-ELEVATION",
+        payload: max_elevation,
+      });
+    }
+    if (distance) {
+      dispatch({
+        type: "SET-SELECTED-TRAIL-DISTANCE",
+        payload: distance,
+      });
+    }
     if (trail_center) {
       dispatch({
         type: "SET-SELECTED-TRAIL-CENTER",
@@ -87,12 +99,19 @@ const GeneralListItem = ({
                 <span className="text-4xl font-semibold">{distance}m </span>
               </div>
               <div>
-                <button
+                {/* <button
                   onClick={(e) => addTrailHandler(e)}
                   className=" text-xs rounded-2xl border-2 border-primary bg-white right-0 py-2 px-4"
                 >
                   SAVE
-                </button>
+                </button> */}
+                <div>
+                  <span className="block text-xs">MAX ELEVATION</span>
+                  <span className="text-4xl font-semibold">
+                    {max_elevation}m{" "}
+                  </span>
+                </div>
+                <div></div>
               </div>
             </li>
           </ul>
