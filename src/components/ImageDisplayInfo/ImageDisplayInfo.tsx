@@ -14,12 +14,8 @@ const ImageDisplayInfo = ({ setShowPopup, showPopup }: Props) => {
       {/* <h1>{showPopup.image_name}</h1> */}
       <img className=" rounded-t-xl" src={showPopup.image_url} />
       {/* <p>{showPopup.image_description}</p> */}
-      <h1 className="p-2">Hi</h1>
-      <p className=" p-2 text-sm">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo quasi minus
-        quidem tempora voluptate sapiente perspiciatis quod rerum odio ipsum,
-        temporibus illum quam, ut itaque dolore voluptatum ad hic error.
-      </p>
+      <h1 className="p-2">{showPopup.image_name}</h1>
+      <p className=" p-2 text-sm">{showPopup.image_description}</p>
     </section>
   );
 };

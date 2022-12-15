@@ -96,7 +96,7 @@ const MyTrailMap = ({ setShowMap }: Props) => {
   useEffect(() => {
     {
       console.log("The Custom Trail effect works");
-      if (currentMyTrail) {
+      if (currentMyTrail?.custom_id) {
         const customTrailRef = doc(
           db,
           "custom-trails",
