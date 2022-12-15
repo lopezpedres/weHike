@@ -51,14 +51,20 @@ export interface InterfaceNewCustomTrailArgs {
   trail_name: string;
   trail_start: GeoPoint;
   trail_end: GeoPoint;
+  trail_center: GeoPoint;
+  trail_geometry?: Feature<Geometry, GeoJsonProperties>;
+  trail_max_altitude: number;
 }
 
 export interface InterfaceNewCustomTrail {
   [key: string]: {
     trail_id: string;
     trail_name: string;
+    trail_center: GeoPoint;
     trail_start: GeoPoint;
     trail_end: GeoPoint;
+    trail_geometry?: Feature<Geometry, GeoJsonProperties>;
+    trail_max_altitude: number;
     createdAt: FieldValue;
     updatedAt: FieldValue;
   };

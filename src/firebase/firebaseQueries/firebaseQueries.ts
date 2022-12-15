@@ -106,7 +106,14 @@ export const addUserTrail = async (newTrailArg: InterfaceNewTrailArg) => {
 export const addCustomTrail = async (
   newCustomTrailArgs: InterfaceNewCustomTrailArgs
 ) => {
-  const { trail_end, trail_name, trail_start } = newCustomTrailArgs;
+  const {
+    trail_end,
+    trail_name,
+    trail_start,
+    trail_geometry,
+    trail_max_altitude,
+    trail_center,
+  } = newCustomTrailArgs;
   const newCustomTrailObject = {} as InterfaceNewCustomTrail;
   const trail_id = uuidv4();
   newCustomTrailObject[trail_id] = {
@@ -114,6 +121,9 @@ export const addCustomTrail = async (
     trail_name,
     trail_start,
     trail_end,
+    trail_max_altitude,
+    trail_center,
+    trail_geometry: trail_geometry ? trail_geometry : null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
@@ -124,7 +134,9 @@ export const addCustomTrail = async (
       trail_id,
       trail_name,
       custom_id: id,
-      tags: { planning: true },
+      tags: { planning: true, custom: true },
+      elevation_gain: trail_max_altitude,
+      trail_center,
     });
   } catch (err) {
     console.log(err);
