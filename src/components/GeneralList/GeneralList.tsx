@@ -10,6 +10,7 @@ import center from "@turf/center";
 import { AllGeoJSON, featureCollection } from "@turf/helpers";
 import getDifficulty from "../../utils/getDifficulty";
 import getMaxAltitude from "../../utils/getMaxAltitude";
+import loadingGift from "/assets/images/loading.gif";
 
 const GeneralList = () => {
   const { globalMap } = useMap();
@@ -102,7 +103,9 @@ const GeneralList = () => {
           />
         ))
       ) : (
-        <h1>Loading...</h1>
+        <div className="absolute top-1/2 -translate-y-1/2">
+          <img alt="loading" src={loadingGift} />
+        </div>
       )}
     </ul>
   );

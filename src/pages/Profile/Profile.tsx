@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { useAuth } from "../../context/UserAuthProvider/UserAuthProvider";
 import { auth } from "../../firebase/firebaseConfig";
 import { logout } from "../../context/UserAuthProvider/UserAuthProvider";
+import loadingGift from "/assets/images/loading.gif";
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -38,7 +39,10 @@ const Profile = () => {
           </section>
         </>
       ) : (
-        <h1>Loading</h1>
+        <div className="absolute top-1/2 -translate-y-1/2">
+          <img alt="loading" src={loadingGift} />
+          <h1 className="text-xl text-center">Loading ...</h1>
+        </div>
       )}
       <Navbar />
     </>
