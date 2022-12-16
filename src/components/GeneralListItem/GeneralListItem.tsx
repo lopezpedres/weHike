@@ -96,7 +96,7 @@ const GeneralListItem = ({
             <li className="flex justify-between items-end">
               <div>
                 <span className="block text-xs">LENGHT</span>
-                <span className="text-4xl font-semibold">{distance}m </span>
+                <span className="text-3xl font-semibold">{distance}m </span>
               </div>
               <div>
                 {/* <button
@@ -107,7 +107,7 @@ const GeneralListItem = ({
                 </button> */}
                 <div>
                   <span className="block text-xs">MAX ELEVATION</span>
-                  <span className="text-4xl font-semibold">
+                  <span className="text-3xl font-semibold">
                     {max_elevation}m{" "}
                   </span>
                 </div>

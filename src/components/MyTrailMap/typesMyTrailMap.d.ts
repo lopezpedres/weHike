@@ -6,6 +6,7 @@ export interface InterfaceSelectedTrailDetails {
   images_id: string;
   notes_id: string;
   trail_id: string;
+  custom_id: string;
 }
 
 export interface ImagesTrail {
@@ -23,4 +24,19 @@ export interface imageTrail {
 export interface UpdatedAtOrCreatedAt {
   seconds: number;
   nanoseconds: number;
+}
+
+export interface InterfaceCustomTrail {
+  [key: string]: CustomTrail;
+}
+export interface CustomTrail {
+  trail_end: GeoPoint;
+  createdAt: UpdatedAtOrCreatedAt;
+  updatedAt: UpdatedAtOrCreatedAt;
+  trail_name: string;
+  trail_start: GeoPoint;
+  trail_max_altitude: number;
+  trail_id: string;
+  trail_center: GeoPoint;
+  trail_geometry?: null;
 }

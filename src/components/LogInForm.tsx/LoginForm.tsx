@@ -10,6 +10,7 @@ import {
 
 interface Props {
   logInWithGoogle: () => void;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 interface InterfaceCredentials {
   email: string;
@@ -19,7 +20,7 @@ const defaultValuesCredentials: InterfaceCredentials = {
   email: "",
   password: "",
 };
-const LoginForm = ({ logInWithGoogle }: Props) => {
+const LoginForm = ({ logInWithGoogle, setLoading }: Props) => {
   const [credentials, setCredentials] = useState(defaultValuesCredentials);
   const { email, password } = credentials;
   const { currentUser } = useAuth();
@@ -40,6 +41,7 @@ const LoginForm = ({ logInWithGoogle }: Props) => {
     });
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
     //Form Verification here
 
@@ -69,6 +71,7 @@ const LoginForm = ({ logInWithGoogle }: Props) => {
           />
           <label className="font-semibold text-sm my-1">password</label>
           <input
+            type={"password"}
             name="password"
             value={password}
             onChange={(e) => onChangeHandler(e)}
@@ -83,7 +86,10 @@ const LoginForm = ({ logInWithGoogle }: Props) => {
           <span className="flex justify-center">or</span>
           <div className="flex justify-center">
             <img
-              onClick={() => logInWithGoogle()}
+              onClick={() => {
+                setLoading(true);
+                logInWithGoogle();
+              }}
               className="w-10 m-4"
               src={googleLogo}
               alt="Google Logo"

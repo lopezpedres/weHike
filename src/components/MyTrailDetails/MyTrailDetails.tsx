@@ -32,18 +32,18 @@ const MyTrailDetails = ({ setShowMap, selectedMyTrailDetails }: Props) => {
               <h1 className="text-3xl ">{trail_name}</h1>
               <span className="text-[green]">easy</span>
             </article>
-            <article className=" p-7 flex justify-between absolute w-full rounded-t-3xl bg-primary bottom-0 shadow-xl">
+            <article className=" p-7 flex justify-evenly absolute w-full rounded-t-3xl bg-primary bottom-0 shadow-xl">
               <div className="flex flex-col items-center">
                 <span className="text-xs font-semibold">Distance</span>
-                <span className="text-xl">20 km</span>
+                <span className="text-xl">2043 m</span>
               </div>
-              <div className="flex flex-col items-center">
+              {/* <div className="flex flex-col items-center">
                 <span className="text-xs font-semibold">Elevation Gain</span>
                 <span className="text-xl">904 m</span>
-              </div>
+              </div> */}
               <div className="flex flex-col items-center">
                 <span className="text-xs font-semibold">Max Altitud</span>
-                <span className="text-xl">3244 km</span>
+                <span className="text-xl">1244 km</span>
               </div>
             </article>
           </section>

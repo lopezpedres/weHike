@@ -7,7 +7,7 @@ import Map, {
   Marker,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import skyLayer from "../../Layers/skyLayer";
 import chevronLeft from "/assets/icons/chevron-left.svg";
 import { userContentState } from "../../context/UserContentProvider/UserContentProvider";
@@ -18,10 +18,15 @@ import AddMedia from "../AddMedia/AddMedia";
 import {
   ImagesTrail,
   imageTrail,
+  InterfaceCustomTrail,
   InterfaceSelectedTrailDetails,
+  UpdatedAtOrCreatedAt,
 } from "./typesMyTrailMap";
 import ImagesMarkers from "../ImagesMarkers/ImagesMarkers";
 import ImageDisplayInfo from "../ImageDisplayInfo/ImageDisplayInfo";
+import routeLayer from "../../Layers/routeLayer";
+import { Feature } from "geojson";
+import getPointToPointRoute from "../../Sources/getPointToPointRoute";
 interface Props {
   setShowMap: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -35,6 +40,11 @@ const MyTrailMap = ({ setShowMap }: Props) => {
   const { userTrails, selectedMyTrailName, userCurrentLocation } =
     useContext(userContentState);
   const [showPopup, setShowPopup] = useState<imageTrail>();
+  const [customTrailData, setCustomTrailData] =
+    useState<InterfaceCustomTrail | null>(null);
+  const [geojsonRouteSource, setGeojsonRouteSource] = useState<Feature | null>(
+    null
+  );
 
   useEffect(() => {
     if (userTrails && selectedMyTrailName) {
@@ -42,7 +52,7 @@ const MyTrailMap = ({ setShowMap }: Props) => {
         ([_key, value]) => value.trail_name === selectedMyTrailName
       );
       const noKeyFilteredTrail = filteredTrail[0][1];
-      const { trail_center, images_id, notes_id, trail_id } =
+      const { trail_center, images_id, notes_id, trail_id, custom_id } =
         noKeyFilteredTrail;
       const { latitude: TrailLat, longitude: TrailLng } =
         trail_center as unknown as GeoPoint;
@@ -53,6 +63,7 @@ const MyTrailMap = ({ setShowMap }: Props) => {
         images_id,
         notes_id,
         trail_id,
+        custom_id: custom_id ? custom_id : "",
       });
     }
     //Open a listener to get the images of the user's trail
@@ -82,6 +93,48 @@ const MyTrailMap = ({ setShowMap }: Props) => {
       }
     }
   }, [currentMyTrail]);
+  useEffect(() => {
+    {
+      console.log("The Custom Trail effect works");
+      if (currentMyTrail?.custom_id) {
+        const customTrailRef = doc(
+          db,
+          "custom-trails",
+          `${currentMyTrail.custom_id}`
+        );
+        console.log(currentMyTrail.custom_id);
+        try {
+          const unsub = onSnapshot(customTrailRef, (querySnapshot) => {
+            const snap = querySnapshot.data();
+            if (snap) {
+              const trailData = snap as InterfaceCustomTrail;
+              setCustomTrailData(trailData);
+            }
+          });
+          return unsub;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  }, [currentMyTrail]);
+  useEffect(() => {
+    const setGeojsonTrail = async () => {
+      if (customTrailData) {
+        const key = Object.keys(customTrailData)[0];
+        const start = customTrailData[key].trail_start;
+        const end = customTrailData[key].trail_end;
+        const geometry = await getPointToPointRoute(
+          [end.longitude, end.latitude],
+          [start.longitude, start.latitude]
+        );
+        if (geometry) {
+          setGeojsonRouteSource(geometry);
+        }
+      }
+    };
+    setGeojsonTrail();
+  }, [customTrailData]);
   //TODO: Need to set this defaults with the value of the user location
   const defaultLat = 49.246292;
   const defaultLng = -123.116226;
@@ -136,6 +189,11 @@ const MyTrailMap = ({ setShowMap }: Props) => {
             setShowPopup={setShowPopup}
             trailImages={trailImages}
           />
+        )}
+        {geojsonRouteSource && (
+          <Source id="current-route" type="geojson" data={geojsonRouteSource}>
+            <Layer {...routeLayer} />
+          </Source>
         )}
       </Map>
       {currentMyTrail && (

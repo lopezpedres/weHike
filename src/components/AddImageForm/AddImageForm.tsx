@@ -25,6 +25,10 @@ const AddImageForm = ({
   const [imageUrl, setImageUrl] = useState<string>();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [titleDescription, setTitleDescription] = useState({
+    title: "",
+    description: "",
+  });
   const onChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files) {
       const currentFile = e.currentTarget.files[0];
@@ -42,8 +46,8 @@ const AddImageForm = ({
       const urlImageUploaded = await postImageTrail(file);
       if (urlImageUploaded && imagePoint) {
         await addImageToTrail({
-          image_description: "",
-          image_name: "",
+          image_description: titleDescription.title,
+          image_name: titleDescription.description,
           image_url: urlImageUploaded,
           trail_images_id: images_id,
           image_point: new GeoPoint(imagePoint.latitude, imagePoint.longitude),
@@ -54,6 +58,16 @@ const AddImageForm = ({
         setTimeout(() => SetDisplayAddImageSection(false), 2000);
       }
     }
+  };
+  const onChangeInputHandler = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setTitleDescription({
+      ...titleDescription,
+      [e.currentTarget.name]: e.currentTarget.value,
+    });
   };
   return (
     <section className="absolute flex flex-col p-6 shadow-md max-w-xs w-10/12 text-xl font-semibold  bg-white rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
@@ -84,6 +98,28 @@ const AddImageForm = ({
               className="hidden"
             />
           </label>
+          {file && (
+            <>
+              <label className=" mt-4 w-full text-xs ">
+                Title <br />
+                <input
+                  name="title"
+                  onChange={(e) => onChangeInputHandler(e)}
+                  className="w-full placeholder:font-normal py-2 outline-none"
+                  placeholder="Type Something"
+                />
+              </label>
+              <label className=" w-full text-xs ">
+                Description <br />
+                <textarea
+                  name="description"
+                  onChange={(e) => onChangeInputHandler(e)}
+                  className="w-full placeholder:font-normal py-2 pb-9 outline-none"
+                  placeholder="Type Something"
+                />
+              </label>
+            </>
+          )}
           {file && (
             <button className=" w-full bg-primary py-2 px-4 shadow-md  m-4 rounded-md">
               Add Image

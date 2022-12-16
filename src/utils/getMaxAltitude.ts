@@ -1,7 +1,10 @@
+import { Feature, GeoJsonProperties, Geometry } from "geojson";
 import { MapRef } from "react-map-gl";
 
 const getMaxAltitude = (
-  featuresNameGroup: mapboxgl.MapboxGeoJSONFeature[],
+  featuresNameGroup:
+    | mapboxgl.MapboxGeoJSONFeature[]
+    | Feature<Geometry, GeoJsonProperties>[],
   globalMap: MapRef
 ) => {
   const maxAlt = featuresNameGroup.map((feature) => {
