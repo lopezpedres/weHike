@@ -27,6 +27,8 @@ import AddIcon from "../AddIcon/AddIcon";
 import { addCustomTrail } from "../../firebase/firebaseQueries/firebaseQueries";
 import { GeoPoint } from "firebase/firestore";
 import getMaxAltitude from "../../utils/getMaxAltitude";
+import StartPointCustomTrail from "../StartPointCustomTrail/StartPointCustomTrail";
+import EndPointCustomTrail from "../EndPointCustomTrail/EndPointCustomTrail";
 
 interface customPoints {
   start: Position | undefined;
@@ -115,9 +117,7 @@ const NavigateMap = () => {
   ) => {
     e.preventDefault();
     if (customPoints?.end && customPoints.start && customPoints?.name) {
-      console.log("enter 1");
       if (geojsonRouteSource && mapRef.current) {
-        console.log("enter 2");
         const maxElevation = getMaxAltitude(
           [geojsonRouteSource],
           mapRef.current
@@ -172,9 +172,10 @@ const NavigateMap = () => {
             <Layer {...routeLayer} />
           </Source>
         )}
-        {/* <Source id="data" type="geojson" data={startPointSource}>
-          <Layer {...startPointLayer} />
-        </Source> */}
+        {customPoints?.end && <EndPointCustomTrail end={customPoints.end} />}
+        {customPoints?.start && (
+          <StartPointCustomTrail start={customPoints.start} />
+        )}
         <NavigationControl />
         <GeolocateControl ref={geolocateControlRef} />
       </Map>
