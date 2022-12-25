@@ -1,6 +1,7 @@
 import { GeoPoint } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { TrailAtt } from "../../context/UserContentProvider/UserContentTypes";
+import ImagesCollection from "../ImagesCollection/ImagesCollection";
 import WeatherList from "../WeatherList/WeatherList";
 import chevronLeft from "/assets/icons/chevron-left.svg";
 
@@ -59,6 +60,7 @@ const MyTrailDetails = ({ setShowMap, selectedMyTrailDetails }: Props) => {
             <article></article>
             <WeatherList trailCenter={[latitude, longitude]} />
           </section>
+          <ImagesCollection />
         </>
       )}
     </>

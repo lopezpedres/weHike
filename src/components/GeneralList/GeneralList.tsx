@@ -44,7 +44,6 @@ const GeneralList = () => {
         const featuresNameGroup = uniqueFeatures.filter(
           (f) => f.properties?.name === feature.properties?.name
         );
-        console.log(featuresNameGroup);
 
         const featuresCollectionTurf = featureCollection(featuresNameGroup);
         const featureCenter = center(featuresCollectionTurf as AllGeoJSON);

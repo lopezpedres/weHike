@@ -10,24 +10,31 @@ interface InterfaceLatLng {
   lat: number;
   lng: number;
 }
-const lat = 49.246292;
-const lng = -123.116226;
+//Assing this valkues to the defaultViewState if
+//I want my location to be in Squamish
+// const lat = 49.246292;
+// const lng = -123.116226;
 const GlobalMap = () => {
   const [latLng, setLatLng] = useState<InterfaceLatLng>();
   const dispatch = useContext(userContentDispatch);
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      console.log("Recived location at GlobalMap", pos);
-      setLatLng({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-      dispatch({ type: "SET-USER-CURRENT-LOCATION", payload: pos });
-    });
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        console.log("Recived location at GlobalMap", pos);
+        setLatLng({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        dispatch({ type: "SET-USER-CURRENT-LOCATION", payload: pos });
+      },
+      (err) => {
+        console.log("This is an error from the navigator location", err);
+      }
+    );
   }, []);
   const defaultViewState = {
-    latitude: 49.668131,
-    longitude: -123.162498,
+    latitude: latLng?.lat,
+    longitude: latLng?.lng,
     //Zoom here is super important, otherwise, I wont be able to get my trails
     //12 seems to be ideal
-    zoom: 12,
+    zoom: 10,
   };
   const globalMapRef = useRef<MapRef | null>(null);
   const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
