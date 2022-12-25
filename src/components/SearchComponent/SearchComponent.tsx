@@ -1,7 +1,13 @@
 import React from "react";
+import { InterfacePropertiesFeature } from "../GeneralList/typesGeneralList";
 import search from "/assets/icons/search.svg";
-
-const SearchComponent = () => {
+interface Props {
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>;
+}
+const SearchComponent = ({ setSearchInput }: Props) => {
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.currentTarget.value);
+  };
   return (
     <section className="sticky mt-1 mx-4 top-0">
       <article className="bg-white pt-12">
@@ -10,6 +16,7 @@ const SearchComponent = () => {
             <img className="w-6" src={search} />
           </div>
           <input
+            onChange={(e) => onChangeHandler(e)}
             type="text"
             id="input-group-1"
             className="border text-sm rounded-lg block w-full pl-10 p-2.5 placeholder-gray-400  "

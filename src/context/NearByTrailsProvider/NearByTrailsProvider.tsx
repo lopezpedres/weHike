@@ -11,11 +11,13 @@ import { userContentState } from "../UserContentProvider/UserContentProvider";
 import { InterfacePropertiesFeature } from "./typesNearByTrailsProvider";
 const width = 1000000;
 const height = 100000;
-const NearByTrailsProvider = () => {
+
+interface Props {
+  children: React.ReactNode;
+}
+const trailsProvider = createContext({} as InterfacePropertiesFeature[] | null);
+const NearByTrailsProvider = ({ children }: Props) => {
   const { globalMap } = useMap();
-  const trailsProvider = createContext(
-    {} as InterfacePropertiesFeature[] | null
-  );
   const { userCurrentLocation } = useContext(userContentState);
   const coordinates = userCurrentLocation?.coords;
   let lat = coordinates?.latitude;
@@ -23,6 +25,9 @@ const NearByTrailsProvider = () => {
   const [features, setFeatures] = useState<InterfacePropertiesFeature[] | null>(
     null
   );
+  const value = useMemo(() => {
+    return features;
+  }, [userCurrentLocation, features]);
   const afterChangeComplete = () => {
     if (lat && lng && globalMap) {
       // lat = 49.246292;
@@ -69,7 +74,7 @@ const NearByTrailsProvider = () => {
         }
       });
       const cleanedFeaturesNoUndefined = cleanedFeatures.filter(
-        (f): f is InterfacePropertiesFeature => f === undefined
+        (f): f is InterfacePropertiesFeature => f !== undefined
       );
       setFeatures(cleanedFeaturesNoUndefined);
       globalMap?.off("render", afterChangeComplete);
@@ -88,12 +93,10 @@ const NearByTrailsProvider = () => {
       });
     }
   }, [globalMap, userCurrentLocation]);
-  const value = useMemo(() => features, [userCurrentLocation]);
+
   return (
-    <trailsProvider.Provider value={value}>
-      NearByTrailsProvider
-    </trailsProvider.Provider>
+    <trailsProvider.Provider value={value}>{children}</trailsProvider.Provider>
   );
 };
-
+export { trailsProvider };
 export default NearByTrailsProvider;
