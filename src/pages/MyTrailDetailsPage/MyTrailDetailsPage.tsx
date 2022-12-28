@@ -57,6 +57,7 @@ const MyTrailDetailsPage = () => {
         <MyTrailDetails
           setShowMap={setShowMap}
           selectedMyTrailDetails={selectedMyTrailDetails}
+          trailImages={trailImages}
         />
       )}
     </main>
