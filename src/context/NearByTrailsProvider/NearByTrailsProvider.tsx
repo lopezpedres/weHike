@@ -28,6 +28,7 @@ const NearByTrailsProvider = ({ children }: Props) => {
   const value = useMemo(() => {
     return features;
   }, [userCurrentLocation, features]);
+  //Need to move afterChangeComplete to utils so this componet is cleaner
   const afterChangeComplete = () => {
     if (lat && lng && globalMap) {
       // lat = 49.246292;

@@ -57,7 +57,6 @@ const MyTrailDetails = ({ setShowMap, selectedMyTrailDetails }: Props) => {
                 <h5 className="text-xl font-semibold">Open in Map</h5>
               </div>
             </article>
-            <article></article>
             <WeatherList trailCenter={[latitude, longitude]} />
           </section>
           <ImagesCollection />
