@@ -40,7 +40,7 @@ const UserContentProvider = ({ children }: LayoutProps) => {
             dispatch({ type: "SET-USER-META", payload: userMeta as userMeta });
             console.log(userMeta);
           });
-          return userMetaSnap(); //Do I need to call this?
+          return userMetaSnap; //Do I need to call this?
         };
         //Get User-Trails
         onSnapshot(userTrailsRef, (querySnapshot) => {
