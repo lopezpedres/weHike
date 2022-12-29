@@ -37,7 +37,9 @@ const WeatherList = ({ trailCenter }: Props) => {
           ))}
         </div>
       ) : (
-        <p>There is no data from Api</p>
+        <p className="text-xl text-center font-semibold">
+          Loading weather data
+        </p>
       )}
     </>
   );

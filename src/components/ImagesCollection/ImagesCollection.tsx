@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useModal } from "../../context/ImageModalProvider/ImageModalProvider";
 import { ImagesTrail, imageTrail } from "../MyTrailMap/typesMyTrailMap";
 
 interface Props {
   trailImages: ImagesTrail;
 }
 const ImagesCollection = ({ trailImages }: Props) => {
+  const { showModal } = useModal();
   const [showImage, setShowImage] = useState(false);
   const [displayedImageDetails, setDisplayedImageDetails] = useState<
     imageTrail | undefined
@@ -24,7 +26,7 @@ const ImagesCollection = ({ trailImages }: Props) => {
             .map(([key, value]) => (
               <li key={key}>
                 <img
-                  onClick={() => onClickHandler(value)}
+                  onClick={() => showModal(value.image_url)}
                   className="object-cover w-full h-full"
                   src={value.image_url}
                 />
