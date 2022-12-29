@@ -1,14 +1,21 @@
 import { GeoPoint } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { TrailAtt } from "../../context/UserContentProvider/UserContentTypes";
+import ImagesCollection from "../ImagesCollection/ImagesCollection";
+import { ImagesTrail } from "../MyTrailMap/typesMyTrailMap";
 import WeatherList from "../WeatherList/WeatherList";
 import chevronLeft from "/assets/icons/chevron-left.svg";
 
 interface Props {
+  trailImages: ImagesTrail;
   selectedMyTrailDetails: TrailAtt;
   setShowMap: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const MyTrailDetails = ({ setShowMap, selectedMyTrailDetails }: Props) => {
+const MyTrailDetails = ({
+  setShowMap,
+  selectedMyTrailDetails,
+  trailImages,
+}: Props) => {
   const { trail_name, distance, elevation_gain, max_elevation, trail_center } =
     selectedMyTrailDetails;
   //!This fixes my issue but I need to change the type of trail_center from number[] to Geopoint
@@ -56,9 +63,9 @@ const MyTrailDetails = ({ setShowMap, selectedMyTrailDetails }: Props) => {
                 <h5 className="text-xl font-semibold">Open in Map</h5>
               </div>
             </article>
-            <article></article>
             <WeatherList trailCenter={[latitude, longitude]} />
           </section>
+          <ImagesCollection trailImages={trailImages} />
         </>
       )}
     </>

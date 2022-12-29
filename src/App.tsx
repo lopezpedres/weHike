@@ -12,6 +12,7 @@ import { useAuth } from "./context/UserAuthProvider/UserAuthProvider";
 import PrivateRoutes from "./Routes/PrivateRoutes";
 import MyTrailsPage from "./pages/MyTrailsPage/MyTrailsPage";
 import MyTrailDetailsPage from "./pages/MyTrailDetailsPage/MyTrailDetailsPage";
+import NearByTrailsProvider from "./context/NearByTrailsProvider/NearByTrailsProvider";
 
 const App = () => {
   const { currentUser } = useAuth();
@@ -37,7 +38,14 @@ const App = () => {
               }
             />
             <Route path="trails">
-              <Route index element={<Home />} />
+              <Route
+                index
+                element={
+                  <NearByTrailsProvider>
+                    <Home />
+                  </NearByTrailsProvider>
+                }
+              />
               <Route path=":trailsName" element={<TrailDetailsPage />} />
             </Route>
             <Route path="my-trails">

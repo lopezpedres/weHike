@@ -95,7 +95,7 @@ const GeneralListItem = ({
             </li>
             <li className="flex justify-between items-end">
               <div>
-                <span className="block text-xs">LENGHT</span>
+                <span className="block text-xs">LENGTH</span>
                 <span className="text-3xl font-semibold">{distance}m </span>
               </div>
               <div>

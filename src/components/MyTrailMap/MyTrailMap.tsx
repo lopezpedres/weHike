@@ -66,10 +66,6 @@ const MyTrailMap = ({ setShowMap }: Props) => {
         custom_id: custom_id ? custom_id : "",
       });
     }
-    //Open a listener to get the images of the user's trail
-    //Get the imageurl of the current trail
-    //Get snapshot of the images-trail collection and retrive the doc with the id === imageUrl
-    //Save data in a state and use it to display Pins to the map
   }, []);
   useEffect(() => {
     console.log("The effect works");

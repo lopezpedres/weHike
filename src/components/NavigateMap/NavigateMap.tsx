@@ -166,12 +166,12 @@ const NavigateMap = () => {
           url="mapbox://mapbox.mapbox-terrain-dem-v1"
         />
         <Layer {...skyLayer} />
-
         {geojsonRouteSource && (
           <Source id="current-route" type="geojson" data={geojsonRouteSource}>
             <Layer {...routeLayer} />
           </Source>
         )}
+        {/* For some reason I cant render bnoth conditions at the same time */}
         {customPoints?.end && <EndPointCustomTrail end={customPoints.end} />}
         {customPoints?.start && (
           <StartPointCustomTrail start={customPoints.start} />
