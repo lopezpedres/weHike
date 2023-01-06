@@ -16,7 +16,7 @@ const ImagesCollection = ({ trailImages }: Props) => {
     setDisplayedImageDetails(value);
   };
   return (
-    <section>
+    <section className="mb-4">
       <h5 className="px-7 text-xl font-semibold pb-4">Media</h5>
       {trailImages && (
         <ul className="grid grid-cols-3 gap-2 px-7">
@@ -34,7 +34,15 @@ const ImagesCollection = ({ trailImages }: Props) => {
             ))}
         </ul>
       )}
-      {!trailImages && <h1>Loading</h1>}
+      {Object.entries(trailImages).length === 0 && (
+        <h1 className="max-w-sm m-4 p-7 border-2 text-lg">
+          <span className=" font-semibold">
+            You have no images in this trail!
+          </span>
+          <br />
+          <span className="text-sm">Open the map to start adding images</span>
+        </h1>
+      )}
       {showImage && (
         <article className="absolute  top-1/2 -translate-y-1/2 overflow-y-hidden">
           <img

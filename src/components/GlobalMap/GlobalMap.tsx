@@ -12,8 +12,8 @@ interface InterfaceLatLng {
 }
 //Assing this valkues to the defaultViewState if
 //I want my location to be in Squamish
-// const lat = 49.246292;
-// const lng = -123.116226;
+const lat = 49.246295;
+const lng = -123.116226;
 const GlobalMap = () => {
   const [latLng, setLatLng] = useState<InterfaceLatLng>();
   const dispatch = useContext(userContentDispatch);
@@ -30,11 +30,13 @@ const GlobalMap = () => {
     );
   }, []);
   const defaultViewState = {
-    latitude: latLng?.lat,
-    longitude: latLng?.lng,
+    // latitude: latLng ? latLng.lat : lat,
+    // longitude: latLng ? latLng.lng : lng,
+    latitude: lat,
+    longitude: lng,
     //Zoom here is super important, otherwise, I wont be able to get my trails
     //12 seems to be ideal
-    zoom: 10,
+    zoom: 9,
   };
   const globalMapRef = useRef<MapRef | null>(null);
   const MAP_BOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;

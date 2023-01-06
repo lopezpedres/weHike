@@ -1,9 +1,41 @@
-const Tag = ({ tagName }: { tagName: string }) => {
+import {
+  Tags,
+  TrailAtt,
+} from "../../context/UserContentProvider/UserContentTypes";
+import { updateUserTrails } from "../../firebase/firebaseQueries/firebaseQueries";
+
+interface Props {
+  tagName: string;
+  addDelete?: boolean;
+  allTags?: TrailAtt;
+}
+const Tag = ({ tagName, addDelete, allTags }: Props) => {
+  const onClickHandler = async (tagName: string) => {
+    console.log("click");
+    if (allTags) {
+      const tagNames = Object.entries(allTags.tags).map(([key, _value]) => key);
+      console.log(tagNames);
+      const filteredTags = tagNames.filter((tag) => tag !== tagName);
+      if (filteredTags) {
+        const newBody = {} as any;
+        filteredTags.forEach((tag) => {
+          return (newBody[tag] = true);
+        });
+        console.log(newBody);
+        await updateUserTrails({
+          trail_id: allTags.trail_id,
+          tags: newBody,
+          trail_name: allTags.trail_name,
+        });
+      }
+    }
+  };
   return (
     <>
       {tagName === "planning" && (
         <div
           className={`
+          relative
       mr-2
       text-[0.6rem]
       inline-flex 
@@ -17,6 +49,14 @@ const Tag = ({ tagName }: { tagName: string }) => {
       rounded-full`}
         >
           {tagName}
+          {addDelete && (
+            <span
+              onClick={() => onClickHandler(tagName)}
+              className=" ml-2 text-[#000000] right-0 font-semibold "
+            >
+              x
+            </span>
+          )}
         </div>
       )}
       {tagName === "done" && (
@@ -35,6 +75,14 @@ const Tag = ({ tagName }: { tagName: string }) => {
       rounded-full`}
         >
           {tagName}
+          {addDelete && (
+            <span
+              onClick={() => onClickHandler(tagName)}
+              className=" ml-2 text-[#000000] right-0 font-semibold "
+            >
+              x
+            </span>
+          )}
         </div>
       )}
       {tagName === "custom" && (
@@ -53,6 +101,14 @@ const Tag = ({ tagName }: { tagName: string }) => {
       rounded-full`}
         >
           {tagName}
+          {addDelete && (
+            <span
+              onClick={() => onClickHandler(tagName)}
+              className=" ml-2 text-[#000000] right-0 font-semibold "
+            >
+              x
+            </span>
+          )}
         </div>
       )}
       {tagName === "fav" && (
@@ -71,8 +127,45 @@ const Tag = ({ tagName }: { tagName: string }) => {
       rounded-full`}
         >
           {tagName}
+          {addDelete && (
+            <span
+              onClick={() => onClickHandler(tagName)}
+              className=" ml-2 text-[#000000] right-0 font-semibold "
+            >
+              x
+            </span>
+          )}
         </div>
       )}
+      {tagName !== "planning" &&
+        tagName !== "done" &&
+        tagName !== "custom" &&
+        tagName !== "fav" && (
+          <div
+            className={`
+      m-2
+      text-[0.6rem]
+      inline-flex 
+      items-center 
+      leading-sm 
+      uppercase 
+      px-3 
+      py-1 
+      bg-[#f3f4f6]
+      text-[#475569]
+      rounded-full`}
+          >
+            {tagName}
+            {addDelete && (
+              <span
+                onClick={() => onClickHandler(tagName)}
+                className=" ml-2 text-[#000000] right-0 font-semibold "
+              >
+                x
+              </span>
+            )}
+          </div>
+        )}
     </>
   );
 };
