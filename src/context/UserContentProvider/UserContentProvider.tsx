@@ -30,17 +30,26 @@ const UserContentProvider = ({ children }: LayoutProps) => {
       const userContentRef = doc(db, "user-meta", `${user?.uid}`);
       const userTrailsRef = doc(db, "user-trails", `${user?.uid}`);
       if (user) {
-        onSnapshot(userContentRef, (querySnapshot) => {
-          const userMeta = querySnapshot.data();
-          dispatch({ type: "SET-USER-META", payload: userMeta as userMeta });
-          console.log(userMeta);
-        });
+        //Need to call all my snapshots like getUserMeta
+        ///I can create a file with all my snapshots and then just
+        //call them here, to make it more organized
+
+        const getUserMeta = () => {
+          const userMetaSnap = onSnapshot(userContentRef, (querySnapshot) => {
+            const userMeta = querySnapshot.data();
+            dispatch({ type: "SET-USER-META", payload: userMeta as userMeta });
+            console.log(userMeta);
+          });
+          return userMetaSnap; //Do I need to call this?
+        };
         //Get User-Trails
         onSnapshot(userTrailsRef, (querySnapshot) => {
           const userTrails = querySnapshot.data();
           dispatch({ type: "SET-MY-TRAILS", payload: userTrails });
           console.log(userTrails);
         });
+        //Call all my snapshots here
+        getUserMeta();
       }
     });
     return onAuthChange;

@@ -46,7 +46,7 @@ export const TrailDetails = ({ selectedtrailDetails, setShowMap }: Props) => {
             </div>
           )}
           <div className="flex flex-col items-center">
-            <span className="text-xs font-semibold">Max Altitud</span>
+            <span className="text-xs font-semibold">Max Altitude</span>
             <span className="text-xl">{elevationMax} m</span>
           </div>
         </article>

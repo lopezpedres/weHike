@@ -8,7 +8,7 @@ import toSlug from "../../utils/toSlug";
 interface Props {
   id?: string;
   name?: string;
-  trail_center?: Position;
+  trail_center?: GeoPoint;
   sac_scale?: string;
   elevation_gain?: number;
   max_elevation?: number;
@@ -63,7 +63,7 @@ const GeneralListItem = ({
     e.stopPropagation();
     const splitedId = id?.split("/")[1];
     if (name && splitedId && trail_center) {
-      const centerGeoPoint = new GeoPoint(trail_center[1], trail_center[0]);
+      // const centerGeoPoint = new GeoPoint(trail_center[1], trail_center[0]);
       try {
         await addUserTrail({
           trail_id: splitedId,
@@ -71,7 +71,7 @@ const GeneralListItem = ({
           tags: {
             planning: true,
           },
-          trail_center: centerGeoPoint,
+          trail_center: trail_center,
           //I need to follow the pipeline of all this attributes
           sac_scale,
           elevation_gain,
@@ -95,7 +95,7 @@ const GeneralListItem = ({
             </li>
             <li className="flex justify-between items-end">
               <div>
-                <span className="block text-xs">LENGHT</span>
+                <span className="block text-xs">LENGTH</span>
                 <span className="text-3xl font-semibold">{distance}m </span>
               </div>
               <div>
@@ -107,9 +107,13 @@ const GeneralListItem = ({
                 </button> */}
                 <div>
                   <span className="block text-xs">MAX ELEVATION</span>
-                  <span className="text-3xl font-semibold">
-                    {max_elevation}m{" "}
-                  </span>
+                  {max_elevation && max_elevation > 0 ? (
+                    <span className="text-3xl font-semibold">
+                      {max_elevation}m
+                    </span>
+                  ) : (
+                    <p className="text-lg mt-2  font-semibold">SEA LEVEL</p>
+                  )}
                 </div>
                 <div></div>
               </div>

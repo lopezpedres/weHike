@@ -1,4 +1,5 @@
 import { GeoPoint } from "firebase/firestore";
+import { Position } from "geojson";
 
 export interface InterfacePropertiesFeature {
   id: string;

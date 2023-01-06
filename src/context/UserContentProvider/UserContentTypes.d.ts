@@ -1,3 +1,4 @@
+import { GeoPoint } from "firebase/firestore";
 import { Point, Position } from "geojson";
 
 type TActionOptions =
@@ -24,13 +25,13 @@ export type State = {
 
 interface Action {
   type: TActionOptions;
-  payload: Position | string | userMeta | DocumentData | undefined | number;
+  payload: GeoPoint | string | userMeta | DocumentData | undefined | number;
 }
 
 export interface SelectedtrailDetails {
   trailId: string;
   trailName: string;
-  trailCenter: Position;
+  trailCenter: GeoPoint;
   elevationGain: number;
   distance: number;
   elevationMax: number;
@@ -47,7 +48,7 @@ export interface TrailAtt {
   distance: number;
   max_elevation: number;
   elevation_gain?: number;
-  trail_center: number[];
+  trail_center: GeoPoint;
   tags: Tags;
   createdAt: CreatedAtOrUpdatedAt;
   trail_name: string;
@@ -59,6 +60,7 @@ export interface Tags {
   planning: boolean;
   done?: boolean;
   fav?: boolean;
+  [key: string]: boolean;
 }
 export interface CreatedAtOrUpdatedAt {
   seconds: number;

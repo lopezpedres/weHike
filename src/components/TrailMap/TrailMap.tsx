@@ -29,8 +29,8 @@ const TrailMap = ({ setShowMap }: Props) => {
   const navigate = useNavigate();
   const defaultLat = 49.246292;
   const defaultLng = -123.116226;
-  const latitude = trailCenter ? trailCenter[1] : defaultLat;
-  const longitude = trailCenter ? trailCenter[0] : defaultLng;
+  const latitude = trailCenter ? trailCenter.latitude : defaultLat;
+  const longitude = trailCenter ? trailCenter.longitude : defaultLng;
   const defaultViewState = {
     latitude: latitude,
     longitude: longitude,
@@ -49,7 +49,7 @@ const TrailMap = ({ setShowMap }: Props) => {
     const splitedId = trailId?.split("/")[1];
     if (trailCenter && splitedId) {
       try {
-        const centerGeoPoint = new GeoPoint(trailCenter[1], trailCenter[0]);
+        const centerGeoPoint = trailCenter;
         await addUserTrail({
           trail_id: splitedId,
           trail_name: trailName,
