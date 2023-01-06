@@ -20,7 +20,7 @@ const MyTrailDetailsPage = () => {
     useState<ImagesTrail>(defaultImagesValue);
   const { userTrails, selectedMyTrailName } = useContext(userContentState);
   useEffect(() => {
-    if (userTrails && selectedMyTrailName && !selectedMyTrailDetails) {
+    if (userTrails && selectedMyTrailName) {
       const filteredTrail = Object.entries(userTrails).filter(
         ([_key, value]) => value.trail_name === selectedMyTrailName
       );
@@ -48,7 +48,7 @@ const MyTrailDetailsPage = () => {
         console.error(error);
       }
     }
-  }, [selectedMyTrailDetails]);
+  }, [selectedMyTrailDetails, userTrails]);
 
   return (
     <main>

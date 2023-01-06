@@ -29,6 +29,7 @@ import { GeoPoint } from "firebase/firestore";
 import getMaxAltitude from "../../utils/getMaxAltitude";
 import StartPointCustomTrail from "../StartPointCustomTrail/StartPointCustomTrail";
 import EndPointCustomTrail from "../EndPointCustomTrail/EndPointCustomTrail";
+import PreviewTrail from "../PreviewTrail/PreviewTrail";
 
 interface customPoints {
   start: Position | undefined;
@@ -42,12 +43,12 @@ const NavigateMap = () => {
   // const coordinates = userCurrentLocation?.coords;
   // let lat = coordinates?.latitude;
   // let lng = coordinates?.longitude;
-  const lat = 49.246292;
+  const lat = 49.246295;
   const lng = -123.116226;
   const defaultViewState = {
     latitude: lat,
     longitude: lng,
-    zoom: 14,
+    zoom: 0,
   };
 
   const mapRef = useRef<MapRef | null>(null);
@@ -59,6 +60,9 @@ const NavigateMap = () => {
   const [geojsonRouteSource, setGeojsonRouteSource] = useState<Feature | null>(
     null
   );
+  const [previewTrail, setPreviewTrail] =
+    useState<mapboxgl.MapboxGeoJSONFeature>();
+
   useEffect(() => {
     const getCustomGeometry = async () => {
       if (customPoints?.end && customPoints.start) {
@@ -78,8 +82,7 @@ const NavigateMap = () => {
   // const startPointSource = getStartPointPathRoute(start);
 
   //Todo:Need to move this to handlers
-  const displayRoute = async (e: MapLayerMouseEvent) => {
-    console.log(e.point);
+  const displayRoute = (e: MapLayerMouseEvent) => {
     const width = 100;
     const height = 100;
     const features = mapRef.current?.queryRenderedFeatures(
@@ -91,6 +94,8 @@ const NavigateMap = () => {
         layers: ["updated_trails"],
       }
     );
+    console.log(features);
+    if (features) setPreviewTrail(features[0]);
   };
   const onMapClickHandler = async (e: MapLayerMouseEvent) => {
     if (showCustomTrailOptions) {
@@ -110,6 +115,8 @@ const NavigateMap = () => {
           });
         }
       }
+    } else {
+      displayRoute(e);
     }
   };
   const onSaveCustomTrailHandler = async (
@@ -141,8 +148,11 @@ const NavigateMap = () => {
     }
   };
   const geolocateControlRef = useCallback((ref: GeolocateControlRef) => {
-    if (ref) {
+    if (mapRef.current?.loaded()) {
+      console.log("in");
       ref.trigger();
+    } else {
+      console.log("nope");
     }
   }, []);
   return (
@@ -159,6 +169,7 @@ const NavigateMap = () => {
         terrain={{ source: "mapbox-dem", exaggeration: 2 }}
         maxPitch={85}
         onRender={(event) => event.target.resize()}
+        projection="globe"
       >
         <Source
           id="mapbox-dem"
@@ -185,6 +196,12 @@ const NavigateMap = () => {
       >
         <AddIcon />
       </div>
+      {previewTrail && (
+        <PreviewTrail
+          setPreviewTrail={setPreviewTrail}
+          feature={previewTrail}
+        />
+      )}
       {displayOptions && (
         <article className="absolute p-10 shadow-md max-w-xs w-10/12 text-xl font-semibold  bg-white rounded-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <button

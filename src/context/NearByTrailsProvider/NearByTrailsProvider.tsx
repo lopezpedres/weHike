@@ -1,6 +1,7 @@
 import center from "@turf/center";
 import { AllGeoJSON, featureCollection } from "@turf/helpers";
 import length from "@turf/length";
+import { GeoPoint } from "firebase/firestore";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useMap } from "react-map-gl";
 import getDifficulty from "../../utils/getDifficulty";
@@ -65,7 +66,10 @@ const NearByTrailsProvider = ({ children }: Props) => {
           const featureObj: InterfacePropertiesFeature = {
             id: properties["@id"],
             name: properties.name,
-            trail_center: featureCenter.geometry.coordinates,
+            trail_center: new GeoPoint(
+              featureCenter.geometry.coordinates[1],
+              featureCenter.geometry.coordinates[0]
+            ),
             sac_scale: getDifficulty(properties.sac_scale),
             elevation_gain: elevationFeaturesByName as number,
             max_elevation: maxElevation,
